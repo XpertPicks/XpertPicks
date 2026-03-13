@@ -1,250 +1,218 @@
-import { useState, useRef } from "react";
-
-const G={bg:"#080808",c1:"#0f0f0f",c2:"#161616",c3:"#1e1e1e",c4:"#252525",br:"#2a2a2a",go:"#e8941a",gd:"#c8781a",g1:"rgba(232,148,26,.1)",g2:"rgba(232,148,26,.2)",gr:"#22c55e",re:"#ef4444",t1:"#fff",t2:"#aaa",t3:"#555"};
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>XPert Picks</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&family=Syne:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#080808;color:#fff;font-family:'Syne',sans-serif}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes spin{to{transform:rotate(360deg)}}
+button{outline:none;cursor:pointer;font-family:'Syne',sans-serif}
+::-webkit-scrollbar{display:none}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const{useState,useRef}=React;
+const G={bg:"#080808",c1:"#0f0f0f",c2:"#161616",c3:"#1e1e1e",br:"#2a2a2a",go:"#e8941a",gd:"#c8781a",g1:"rgba(232,148,26,.1)",g2:"rgba(232,148,26,.2)",gr:"#22c55e",re:"#ef4444",t1:"#fff",t2:"#aaa",t3:"#555"};
 const BOARD=[
-  {name:"Alperen Sengun",team:"HOU",id:1631167,prop:"PRA",line:37.5,pick:"OVER",conf:78,l5:5,l10:9,l25:21,streak:6,h2h:3,hl10:8,al10:6},
-  {name:"Domantas Sabonis",team:"SAC",id:1627734,prop:"Rebounds",line:13.5,pick:"OVER",conf:76,l5:5,l10:8,l25:20,streak:5,h2h:3,hl10:7,al10:7},
-  {name:"Nikola Jokic",team:"DEN",id:203999,prop:"PRA",line:52.5,pick:"OVER",conf:75,l5:4,l10:8,l25:21,streak:4,h2h:4,hl10:8,al10:7},
-  {name:"Luka Doncic",team:"LAL",id:1629029,prop:"Points",line:28.5,pick:"OVER",conf:74,l5:5,l10:8,l25:19,streak:5,h2h:3,hl10:8,al10:6},
-  {name:"Giannis Antetokounmpo",team:"MIL",id:203507,prop:"Rebounds",line:11.5,pick:"OVER",conf:73,l5:4,l10:8,l25:20,streak:3,h2h:4,hl10:7,al10:7},
-  {name:"Josh Giddey",team:"CHI",id:1630581,prop:"Assists",line:8.5,pick:"OVER",conf:70,l5:5,l10:8,l25:17,streak:5,h2h:2,hl10:7,al10:5},
-  {name:"Jamal Murray",team:"DEN",id:1627750,prop:"Points",line:22.5,pick:"OVER",conf:69,l5:4,l10:7,l25:18,streak:2,h2h:3,hl10:7,al10:6},
-  {name:"Jayson Tatum",team:"BOS",id:1628369,prop:"Points",line:26.5,pick:"OVER",conf:68,l5:3,l10:7,l25:17,streak:1,h2h:3,hl10:7,al10:5},
-  {name:"Karl-Anthony Towns",team:"NYK",id:1626157,prop:"Rebounds",line:10.5,pick:"OVER",conf:67,l5:4,l10:7,l25:16,streak:4,h2h:2,hl10:6,al10:5},
-  {name:"Anthony Edwards",team:"MIN",id:1630162,prop:"Points",line:25.5,pick:"OVER",conf:65,l5:3,l10:6,l25:16,streak:2,h2h:2,hl10:6,al10:5},
+{name:"Alperen Sengun",team:"HOU",id:1631167,prop:"PRA",line:37.5,pick:"OVER",conf:78,l5:5,l10:9,l25:21,streak:6,h2h:3,hl10:8,al10:6},
+{name:"Domantas Sabonis",team:"SAC",id:1627734,prop:"Rebounds",line:13.5,pick:"OVER",conf:76,l5:5,l10:8,l25:20,streak:5,h2h:3,hl10:7,al10:7},
+{name:"Nikola Jokic",team:"DEN",id:203999,prop:"PRA",line:52.5,pick:"OVER",conf:75,l5:4,l10:8,l25:21,streak:4,h2h:4,hl10:8,al10:7},
+{name:"Luka Doncic",team:"LAL",id:1629029,prop:"Points",line:28.5,pick:"OVER",conf:74,l5:5,l10:8,l25:19,streak:5,h2h:3,hl10:8,al10:6},
+{name:"Giannis Antetokounmpo",team:"MIL",id:203507,prop:"Rebounds",line:11.5,pick:"OVER",conf:73,l5:4,l10:8,l25:20,streak:3,h2h:4,hl10:7,al10:7},
+{name:"Josh Giddey",team:"CHI",id:1630581,prop:"Assists",line:8.5,pick:"OVER",conf:70,l5:5,l10:8,l25:17,streak:5,h2h:2,hl10:7,al10:5},
+{name:"Jamal Murray",team:"DEN",id:1627750,prop:"Points",line:22.5,pick:"OVER",conf:69,l5:4,l10:7,l25:18,streak:2,h2h:3,hl10:7,al10:6},
+{name:"Jayson Tatum",team:"BOS",id:1628369,prop:"Points",line:26.5,pick:"OVER",conf:68,l5:3,l10:7,l25:17,streak:1,h2h:3,hl10:7,al10:5},
+{name:"Karl-Anthony Towns",team:"NYK",id:1626157,prop:"Rebounds",line:10.5,pick:"OVER",conf:67,l5:4,l10:7,l25:16,streak:4,h2h:2,hl10:6,al10:5},
+{name:"Anthony Edwards",team:"MIN",id:1630162,prop:"Points",line:25.5,pick:"OVER",conf:65,l5:3,l10:6,l25:16,streak:2,h2h:2,hl10:6,al10:5},
 ];
 const HIST=[
-  {d:"Mar 13",p:"Luka OVER 8.5 Ast",r:"WIN",a:"11",cat:"Assists"},
-  {d:"Mar 13",p:"Giddey OVER 8.5 Ast",r:"WIN",a:"10",cat:"Assists"},
-  {d:"Mar 13",p:"Lakers ML",r:"WIN",a:"✓",cat:"ML"},
-  {d:"Mar 11",p:"Mitchell OVER 25.5 Pts",r:"WIN",a:"31",cat:"Points"},
-  {d:"Mar 11",p:"Sengun OVER 37.5 PRA",r:"WIN",a:"43",cat:"PRA"},
-  {d:"Mar 10",p:"Edwards OVER 28.5 Pts",r:"WIN",a:"35",cat:"Points"},
-  {d:"Mar 10",p:"Brunson OVER 25.5 Pts",r:"LOSS",a:"22",cat:"Points"},
-  {d:"Mar 10",p:"Sabonis OVER 13.5 Reb",r:"WIN",a:"16",cat:"Rebounds"},
-  {d:"Mar 9",p:"Green OVER 22.5 Pts",r:"WIN",a:"27",cat:"Points"},
-  {d:"Mar 9",p:"Wagner OVER 23.5 Pts",r:"LOSS",a:"19",cat:"Points"},
-  {d:"Mar 8",p:"Zion OVER 23.5 Pts",r:"WIN",a:"28",cat:"Points"},
-  {d:"Mar 8",p:"Harden OVER 8.5 Ast",r:"WIN",a:"11",cat:"Assists"},
-  {d:"Mar 8",p:"LaMelo OVER 7.5 Ast",r:"LOSS",a:"6",cat:"Assists"},
-  {d:"Mar 7",p:"Banchero OVER 21.5 Pts",r:"WIN",a:"26",cat:"Points"},
+{d:"Mar 13",p:"Luka OVER 8.5 Ast",r:"WIN",a:"11",cat:"Assists"},
+{d:"Mar 13",p:"Giddey OVER 8.5 Ast",r:"WIN",a:"10",cat:"Assists"},
+{d:"Mar 13",p:"Lakers ML",r:"WIN",a:"✓",cat:"ML"},
+{d:"Mar 11",p:"Mitchell OVER 25.5 Pts",r:"WIN",a:"31",cat:"Points"},
+{d:"Mar 11",p:"Sengun OVER 37.5 PRA",r:"WIN",a:"43",cat:"PRA"},
+{d:"Mar 10",p:"Edwards OVER 28.5 Pts",r:"WIN",a:"35",cat:"Points"},
+{d:"Mar 10",p:"Brunson OVER 25.5 Pts",r:"LOSS",a:"22",cat:"Points"},
+{d:"Mar 10",p:"Sabonis OVER 13.5 Reb",r:"WIN",a:"16",cat:"Rebounds"},
+{d:"Mar 9",p:"Green OVER 22.5 Pts",r:"WIN",a:"27",cat:"Points"},
+{d:"Mar 9",p:"Wagner OVER 23.5 Pts",r:"LOSS",a:"19",cat:"Points"},
+{d:"Mar 8",p:"Zion OVER 23.5 Pts",r:"WIN",a:"28",cat:"Points"},
+{d:"Mar 8",p:"Harden OVER 8.5 Ast",r:"WIN",a:"11",cat:"Assists"},
+{d:"Mar 8",p:"LaMelo OVER 7.5 Ast",r:"LOSS",a:"6",cat:"Assists"},
+{d:"Mar 7",p:"Banchero OVER 21.5 Pts",r:"WIN",a:"26",cat:"Points"},
+{d:"Mar 7",p:"Kawhi OVER 21.5 Pts",r:"WIN",a:"24",cat:"Points"},
 ];
-const PLAT=[{n:"FanDuel",c:"#1a91ff",u:"https://sportsbook.fanduel.com"},{n:"DraftKings",c:"#53d337",u:"https://sportsbook.draftkings.com"},{n:"PrizePicks",c:"#9333ea",u:"https://app.prizepicks.com"},{n:"BetMGM",c:"#d4a843",u:"https://sports.betmgm.com"},{n:"Caesars",c:"#3b82f6",u:"https://sportsbook.caesars.com"},{n:"ESPN Bet",c:"#ef4444",u:"https://espnbet.com"}];
+const PLAT=[
+{n:"FanDuel",c:"#1a91ff",u:"https://sportsbook.fanduel.com"},
+{n:"DraftKings",c:"#53d337",u:"https://sportsbook.draftkings.com"},
+{n:"PrizePicks",c:"#9333ea",u:"https://app.prizepicks.com"},
+{n:"BetMGM",c:"#d4a843",u:"https://sports.betmgm.com"},
+{n:"Caesars",c:"#3b82f6",u:"https://sportsbook.caesars.com"},
+{n:"ESPN Bet",c:"#ef4444",u:"https://espnbet.com"},
+];
 const fo=o=>o?(o>0?`+${o}`:`${o}`):"—";
 const pct=(n,d)=>Math.round(n/d*100);
-
-function Photo({name,size=38}){
-  const[err,setErr]=useState(false);
-  const id={1631167:1631167,1627734:1627734,203999:203999,1629029:1629029,203507:203507,1630581:1630581,1627750:1627750,1628369:1628369,1626157:1626157,1630162:1630162};
-  const p=BOARD.find(b=>b.name===name);
-  const ini=name.split(" ").map(w=>w[0]).join("").slice(0,2);
-  if(!p||err)return<div style={{width:size,height:size,borderRadius:size*.28,flexShrink:0,background:`linear-gradient(135deg,${G.go}44,${G.go}11)`,border:`1.5px solid ${G.go}33`,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:size*.36,color:G.go}}>{ini}</div>;
-  return<img src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${p.id}.png`} onError={()=>setErr(true)} style={{width:size,height:size,borderRadius:size*.28,objectFit:"cover",objectPosition:"top",flexShrink:0,border:`1.5px solid ${G.go}33`,background:G.c3}}/>;
+const TABS=[{id:"board",i:"🏆",l:"Board"},{id:"ai",i:"🤖",l:"AI"},{id:"record",i:"📈",l:"Record"},{id:"slip",i:"📋",l:"Slip"}];function Photo({name,size=38}){
+const[err,setErr]=useState(false);
+const p=BOARD.find(b=>b.name===name);
+const ini=name.split(” “).map(w=>w[0]).join(””).slice(0,2);
+if(!p||err)return<div style={{width:size,height:size,borderRadius:size*.28,flexShrink:0,background:linear-gradient(135deg,${G.go}44,${G.go}11),border:1.5px solid ${G.go}33,display:“flex”,alignItems:“center”,justifyContent:“center”,fontWeight:900,fontSize:size*.36,color:G.go}}>{ini}</div>;
+return<img src={https://cdn.nba.com/headshots/nba/latest/1040x760/${p.id}.png} onError={()=>setErr(true)} style={{width:size,height:size,borderRadius:size*.28,objectFit:“cover”,objectPosition:“top”,flexShrink:0,border:1.5px solid ${G.go}33,background:G.c3}}/>;
 }
-
-const TABS=[{id:"board",i:"🏆",l:"Board"},{id:"ai",i:"🤖",l:"AI Picks"},{id:"record",i:"📈",l:"Record"},{id:"slip",i:"📋",l:"Slip"}];
-
-export default function App(){
-  const[tab,setTab]=useState("board");
-  const[filter,setFilter]=useState("l5");
-  const[range,setRange]=useState(10);
-  const[rCat,setRCat]=useState("All");
-  const[slip,setSlip]=useState([]);
-  const[modal,setModal]=useState(false);
-  const[cp,setCp]=useState(false);
-  const cpRef=useRef();
-
-  const add=item=>setSlip(p=>p.find(s=>s.key===item.key)?p.filter(s=>s.key!==item.key):[...p,item]);
-  const rem=item=>setSlip(p=>p.filter(s=>s.key!==item.key));
-  const filters=[{id:"l5",lb:"L5"},{id:"l10",lb:"L10"},{id:"l25",lb:"L25"},{id:"streak",lb:"Streak"},{id:"h2h",lb:"H2H"}];
-  const val=(p)=>filter==="l5"?p.l5:filter==="l10"?p.l10:filter==="l25"?p.l25:filter==="streak"?p.streak:p.h2h;
-  const den=filter==="l5"?5:filter==="l10"?10:filter==="l25"?25:10;
-  const top100=BOARD.filter(p=>pct(val(p),den)>=80);
-  const filtered=HIST.slice(0,range).filter(h=>rCat==="All"||h.cat===rCat);
-  const wins=filtered.filter(h=>h.r==="WIN").length;
-  const hitPct=filtered.length?pct(wins,filtered.length):0;
-  const avg=slip.length?Math.round(slip.reduce((a,s)=>a+s.conf,0)/slip.length):0;
-  const txt=slip.map(s=>`${s.pick} ${s.pname} ${s.lb} ${s.ln}`).join("\n");
-  const copy=()=>{try{if(cpRef.current){cpRef.current.select();document.execCommand("copy");}else navigator.clipboard?.writeText(txt);}catch{}setCp(true);setTimeout(()=>setCp(false),2000);};
-
-  return(
-    <div style={{background:G.bg,minHeight:"100vh",color:"#fff",fontFamily:"system-ui,sans-serif",paddingBottom:70,maxWidth:480,margin:"0 auto"}}>
-      <style>{`*{box-sizing:border-box;margin:0;padding:0}button{outline:none;cursor:pointer}::-webkit-scrollbar{display:none}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}`}</style>
-
-      {/* TOPBAR */}
-      <div style={{background:G.bg,borderBottom:`1px solid ${G.br}`,position:"sticky",top:0,zIndex:300,padding:"0 14px",display:"flex",alignItems:"center",height:52,gap:10}}>
-        <div style={{width:32,height:32,borderRadius:8,background:`linear-gradient(135deg,${G.go},${G.gd})`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>🐐</div>
-        <div><div style={{fontWeight:900,fontSize:17,letterSpacing:2,color:G.go,lineHeight:1}}>XPERT PICKS</div><div style={{color:G.t3,fontSize:8,letterSpacing:1}}>PROPS & PARLAYS</div></div>
-        <div style={{flex:1}}/>
-        <div style={{display:"flex",alignItems:"center",gap:4}}><div style={{width:6,height:6,borderRadius:"50%",background:G.go,animation:"pulse 1.5s infinite"}}/><span style={{color:G.go,fontSize:10,fontWeight:700}}>LIVE</span></div>
-        {slip.length>0&&<div style={{background:G.go,color:"#000",borderRadius:999,padding:"3px 10px",fontSize:11,fontWeight:800}}>{slip.length}</div>}
-      </div>
-
-      <div style={{padding:"14px 14px 0"}}>
-
-      {/* BOARD */}
-      {tab==="board"&&<div>
-        {/* FILTERS */}
-        <div style={{display:"flex",gap:6,marginBottom:12,overflowX:"auto",paddingBottom:2}}>
-          {filters.map(f=><button key={f.id} onClick={()=>setFilter(f.id)} style={{padding:"6px 14px",borderRadius:999,fontSize:11,fontWeight:700,whiteSpace:"nowrap",background:filter===f.id?G.go:"transparent",border:`1.5px solid ${filter===f.id?G.go:G.br}`,color:filter===f.id?"#000":G.t2}}>{f.lb}</button>)}
-        </div>
-
-        {/* TOP 100 */}
-        {top100.length>0&&<div style={{background:G.c1,border:`2px solid ${G.go}44`,borderRadius:14,padding:14,marginBottom:12}}>
-          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-            <span style={{fontSize:18}}>💯</span>
-            <div><div style={{color:G.go,fontWeight:800,fontSize:11,letterSpacing:1}}>THE 100</div><div style={{color:G.t3,fontSize:9}}>80%+ hit rate · tap to add to slip</div></div>
-          </div>
-          {top100.map((p,i)=>{
-            const key=p.name+p.prop,ins=!!slip.find(s=>s.key===key),v=val(p),r=pct(v,den);
-            return<div key={i} onClick={()=>add({key,pname:p.name,lb:p.prop,ln:p.line,pick:p.pick,conf:p.conf,gl:"Leaderboard"})} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",background:ins?G.g2:G.c2,border:`1px solid ${ins?G.go+"55":G.br}`,borderRadius:10,marginBottom:6,cursor:"pointer"}}>
-              <span style={{color:G.t3,fontSize:12,fontWeight:700,width:16}}>{i+1}</span>
-              <Photo name={p.name} size={34}/>
-              <div style={{flex:1,minWidth:0}}><div style={{color:G.t1,fontWeight:700,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div><div style={{color:G.t3,fontSize:10}}>{p.pick} {p.line} {p.prop}</div></div>
-              <div style={{textAlign:"right",flexShrink:0}}><div style={{color:r===100?G.gr:G.go,fontWeight:900,fontSize:18,lineHeight:1}}>{r}%</div><div style={{color:G.t3,fontSize:9}}>{v}/{den}</div></div>
-            </div>;
-          })}
-        </div>}
-
-        {/* FULL LEADERBOARD */}
-        <div style={{color:G.go,fontWeight:800,fontSize:11,letterSpacing:1,marginBottom:10}}>🏆 FULL LEADERBOARD</div>
-        {BOARD.map((p,i)=>{
-          const v=val(p),r=pct(v,den),cc=r>=80?G.gr:r>=65?G.go:G.t2;
-          const key=p.name+p.prop,ins=!!slip.find(s=>s.key===key);
-          return<div key={i} style={{background:G.c1,border:`1px solid ${ins?G.go+"55":G.br}`,borderRadius:12,padding:"12px 14px",marginBottom:8}}>
-            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
-              <span style={{color:G.t3,fontSize:13,fontWeight:700,width:20,flexShrink:0}}>#{i+1}</span>
-              <Photo name={p.name} size={42}/>
-              <div style={{flex:1,minWidth:0}}><div style={{color:G.t1,fontWeight:700,fontSize:14,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div><div style={{color:G.t3,fontSize:10,marginTop:1}}>{p.team} · {p.pick} {p.line} {p.prop}</div></div>
-              <div style={{textAlign:"right",flexShrink:0}}><div style={{color:cc,fontWeight:900,fontSize:22,lineHeight:1}}>{r}%</div><div style={{color:G.t3,fontSize:9}}>{v}/{den} {filter.toUpperCase()}</div></div>
-            </div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:4,marginBottom:8}}>
-              {[{lb:"L5",v:p.l5,d:5},{lb:"L10",v:p.l10,d:10},{lb:"L25",v:p.l25,d:25},{lb:"Home",v:p.hl10,d:10},{lb:"Away",v:p.al10,d:10}].map(s=>{
-                const rv=pct(s.v,s.d);
-                return<div key={s.lb} style={{textAlign:"center",background:G.c2,borderRadius:6,padding:"6px 2px"}}>
-                  <div style={{color:rv>=80?G.gr:rv>=65?G.go:G.t2,fontWeight:800,fontSize:12,lineHeight:1}}>{rv}%</div>
-                  <div style={{color:G.t3,fontSize:7,marginTop:2}}>{s.lb}</div>
-                  <div style={{height:3,background:G.c3,borderRadius:2,marginTop:3,overflow:"hidden"}}><div style={{width:`${rv}%`,height:"100%",background:rv>=80?G.gr:rv>=65?G.go:G.t3}}/></div>
-                </div>;
-              })}
-            </div>
-            <div style={{display:"flex",gap:5,marginBottom:8}}>
-              <div style={{flex:1,background:G.c2,borderRadius:6,padding:"6px 8px",textAlign:"center"}}><div style={{color:G.t2,fontSize:8,marginBottom:1}}>Streak</div><div style={{color:p.streak>=5?G.gr:G.go,fontWeight:700,fontSize:12}}>🔥 {p.streak}</div></div>
-              <div style={{flex:1,background:G.c2,borderRadius:6,padding:"6px 8px",textAlign:"center"}}><div style={{color:G.t2,fontSize:8,marginBottom:1}}>H2H</div><div style={{color:p.h2h>=3?G.gr:G.go,fontWeight:700,fontSize:12}}>{p.h2h}/4</div></div>
-              <div style={{flex:1,background:G.c2,borderRadius:6,padding:"6px 8px",textAlign:"center"}}><div style={{color:G.t2,fontSize:8,marginBottom:1}}>Conf</div><div style={{color:p.conf>=70?G.gr:G.go,fontWeight:700,fontSize:12}}>{p.conf}%</div></div>
-            </div>
-            <button onClick={()=>add({key,pname:p.name,lb:p.prop,ln:p.line,pick:p.pick,conf:p.conf,gl:"Board"})} style={{width:"100%",padding:"9px",background:ins?G.gr:`linear-gradient(90deg,${G.go},${G.gd})`,border:"none",borderRadius:8,color:"#000",fontSize:12,fontWeight:800}}>{ins?"✓ In Slip":"+ Add to Slip"}</button>
-          </div>;
-        })}
-      </div>}
-
-      {/* AI PICKS */}
-      {tab==="ai"&&<div>
-        <div style={{background:`linear-gradient(135deg,${G.c1},${G.c2})`,border:`2px solid ${G.go}44`,borderRadius:14,padding:14,marginBottom:14}}>
-          <div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:20}}>🤖</span><div><div style={{color:G.go,fontWeight:800,fontSize:12,letterSpacing:1}}>AI PICK ANALYSIS</div><div style={{color:G.t3,fontSize:9}}>Sharp money + historical data</div></div></div>
-        </div>
-        {BOARD.slice(0,5).map((p,i)=>{
-          const key=p.name+p.prop,ins=!!slip.find(s=>s.key===key);
-          const cc=p.conf>=70?G.gr:p.conf>=63?G.go:G.t2;
-          const lvl=p.conf>=70?"🔥 HIGH CONFIDENCE":p.conf>=63?"⚡ MEDIUM":"📊 STANDARD";
-          return<div key={i} style={{background:G.c1,border:`1px solid ${ins?G.go+"55":G.br}`,borderRadius:14,padding:14,marginBottom:10}}>
-            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
-              <Photo name={p.name} size={46}/>
-              <div style={{flex:1,minWidth:0}}><div style={{color:G.t1,fontWeight:800,fontSize:16,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div><div style={{color:G.t3,fontSize:10,marginTop:1}}>{p.team} · {p.prop}</div></div>
-              <div style={{textAlign:"right"}}><div style={{color:cc,fontWeight:900,fontSize:24,lineHeight:1}}>{p.conf}%</div><div style={{color:G.t3,fontSize:9}}>confidence</div></div>
-            </div>
-            <div style={{background:`linear-gradient(135deg,${p.pick==="OVER"?"#22c55e":"#ef4444"}22,${G.c2})`,border:`1px solid ${p.pick==="OVER"?G.gr:G.re}33`,borderRadius:10,padding:"10px 14px",marginBottom:12}}>
-              <div style={{color:p.pick==="OVER"?G.gr:G.re,fontWeight:900,fontSize:22,marginBottom:6}}>{p.pick} {p.line} {p.prop}</div>
-              <div style={{color:G.go,fontSize:10,fontWeight:700,marginBottom:4}}>{lvl}</div>
-              <div style={{color:G.t2,fontSize:12,lineHeight:1.5}}>{p.name} {p.pick==="OVER"?"has been smashing this line recently":"is being limited by this matchup"}. Line movement favors this side. {p.conf>=70?"Back this aggressively.":"Solid play with controlled sizing."}</div>
-            </div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:10}}>
-              {[{lb:"L5 Rate",v:`${pct(p.l5,5)}%`,c:p.l5===5?G.gr:G.go},{lb:"Streak",v:`🔥 ${p.streak}`,c:p.streak>=5?G.gr:G.go},{lb:"H2H",v:`${p.h2h}/4`,c:p.h2h>=3?G.gr:G.go}].map(s=><div key={s.lb} style={{textAlign:"center",background:G.c2,borderRadius:8,padding:"8px 4px",border:`1px solid ${G.br}`}}><div style={{color:s.c,fontWeight:800,fontSize:15,lineHeight:1}}>{s.v}</div><div style={{color:G.t3,fontSize:8,marginTop:2}}>{s.lb}</div></div>)}
-            </div>
-            <button onClick={()=>add({key,pname:p.name,lb:p.prop,ln:p.line,pick:p.pick,conf:p.conf,gl:"AI Picks"})} style={{width:"100%",padding:"10px",background:ins?G.gr:`linear-gradient(90deg,${G.go},${G.gd})`,border:"none",borderRadius:8,color:"#000",fontSize:13,fontWeight:800}}>{ins?"✓ In Slip":"+ Add to Slip"}</button>
-          </div>;
-        })}
-      </div>}
-
-      {/* RECORD */}
-      {tab==="record"&&<div>
-        <div style={{background:G.c1,borderRadius:14,padding:14,marginBottom:12,border:`1px solid ${G.br}`}}>
-          <div style={{color:G.go,fontWeight:800,fontSize:11,letterSpacing:1,marginBottom:10}}>📊 TRACK RECORD</div>
-          <div style={{display:"flex",gap:6,marginBottom:10,overflowX:"auto",paddingBottom:2}}>
-            {[5,10,20,25].map(r=><button key={r} onClick={()=>setRange(r)} style={{padding:"6px 14px",borderRadius:999,fontSize:11,fontWeight:700,whiteSpace:"nowrap",background:range===r?G.go:"transparent",border:`1.5px solid ${range===r?G.go:G.br}`,color:range===r?"#000":G.t2}}>L{r}</button>)}
-          </div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginBottom:10}}>
-            {[{lb:"Hit Rate",v:`${hitPct}%`,c:hitPct>=70?G.gr:G.go},{lb:"Wins",v:wins,c:G.gr},{lb:"Losses",v:filtered.length-wins,c:G.re},{lb:"Total",v:filtered.length,c:G.t1}].map(s=><div key={s.lb} style={{textAlign:"center",background:G.c2,borderRadius:8,padding:"8px 4px",border:`1px solid ${G.br}`}}><div style={{color:s.c,fontSize:20,fontWeight:900,lineHeight:1}}>{s.v}</div><div style={{color:G.t3,fontSize:8,marginTop:2}}>{s.lb}</div></div>)}
-          </div>
-          <div style={{height:8,background:G.c3,borderRadius:4,overflow:"hidden"}}><div style={{width:`${hitPct}%`,height:"100%",background:`linear-gradient(90deg,${G.go},${G.gr})`,borderRadius:4}}/></div>
-        </div>
-        <div style={{display:"flex",gap:5,marginBottom:10,overflowX:"auto",paddingBottom:2}}>
-          {["All","Points","Rebounds","Assists","PRA","3PM","ML"].map(c=><button key={c} onClick={()=>setRCat(c)} style={{padding:"5px 12px",borderRadius:999,fontSize:10,fontWeight:700,whiteSpace:"nowrap",background:rCat===c?G.go:"transparent",border:`1px solid ${rCat===c?G.go:G.br}`,color:rCat===c?"#000":G.t2}}>{c}</button>)}
-        </div>
-        {filtered.map((h,i)=><div key={i} style={{background:G.c1,borderRadius:10,padding:"10px 14px",marginBottom:6,border:`1px solid ${h.r==="WIN"?G.gr+"33":G.re+"33"}`,display:"flex",alignItems:"center",gap:10}}>
-          <span style={{fontSize:16}}>{h.r==="WIN"?"✅":"❌"}</span>
-          <div style={{flex:1,minWidth:0}}><div style={{color:G.t1,fontSize:12,fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{h.p}</div><div style={{color:G.t3,fontSize:10,marginTop:1}}>{h.d} · {h.a}</div></div>
-          <span style={{color:h.r==="WIN"?G.gr:G.re,fontWeight:800,fontSize:11}}>{h.r}</span>
-        </div>)}
-      </div>}
-
-      {/* SLIP */}
-      {tab==="slip"&&<div style={{background:G.c1,border:`1px solid ${G.br}`,borderRadius:12,overflow:"hidden"}}>
-        <div style={{background:`linear-gradient(90deg,${G.go}22,transparent)`,borderBottom:`1px solid ${G.br}`,padding:"12px 14px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-          <div style={{display:"flex",alignItems:"center",gap:8}}><span style={{color:G.t1,fontWeight:700,fontSize:14}}>Bet Slip</span>{slip.length>0&&<div style={{background:G.go,color:"#000",borderRadius:"50%",width:20,height:20,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:900}}>{slip.length}</div>}</div>
-          {slip.length>0&&<button onClick={()=>slip.forEach(rem)} style={{background:"none",border:"none",color:G.t3,fontSize:11}}>Clear all</button>}
-        </div>
-        {slip.length===0?<div style={{padding:"36px 20px",textAlign:"center"}}><div style={{fontSize:30,marginBottom:10}}>🐐</div><div style={{color:G.t2,fontSize:13,fontWeight:600,marginBottom:4}}>Build your parlay</div><div style={{color:G.t3,fontSize:11}}>Add picks from Board or AI Picks</div></div>:<div style={{padding:10}}>
-          {slip.map((s,i)=><div key={i} style={{background:G.c2,borderRadius:8,padding:10,marginBottom:6,border:`1px solid ${G.br}`,position:"relative"}}>
-            <button onClick={()=>rem(s)} style={{position:"absolute",top:8,right:8,background:"none",border:"none",color:G.t3,fontSize:18}}>×</button>
-            <div style={{paddingRight:24}}><div style={{color:G.t1,fontWeight:700,fontSize:12}}>{s.pname}</div><div style={{color:G.t3,fontSize:10,marginBottom:4}}>{s.lb} · {s.gl}</div>
-              <div style={{display:"flex",alignItems:"center",gap:6}}>
-                <span style={{background:s.pick==="OVER"?"#22c55e15":"#ef444415",color:s.pick==="OVER"?G.gr:G.re,borderRadius:4,padding:"2px 8px",fontSize:11,fontWeight:700}}>{s.pick}</span>
-                <span style={{color:G.t1,fontWeight:800,fontSize:13}}>{s.ln}</span>
-                <span style={{color:G.go,fontSize:10,marginLeft:"auto",fontWeight:600}}>{s.conf}%</span>
-              </div>
-            </div>
-          </div>)}
-          <div style={{padding:"8px 4px",borderTop:`1px solid ${G.br}`,marginBottom:8}}>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}><span style={{color:G.t3,fontSize:11}}>Avg Confidence</span><span style={{color:G.go,fontWeight:700,fontSize:11}}>{avg}%</span></div>
-            <div style={{display:"flex",justifyContent:"space-between"}}><span style={{color:G.t3,fontSize:11}}>Legs</span><span style={{color:G.t2,fontWeight:700,fontSize:11}}>{slip.length}</span></div>
-          </div>
-          <textarea ref={cpRef} readOnly value={txt} style={{position:"fixed",left:"-9999px",opacity:0}}/>
-          <button onClick={copy} style={{width:"100%",padding:"9px",marginBottom:6,background:"transparent",border:`1.5px solid ${G.br}`,borderRadius:8,color:G.t2,fontSize:12,fontWeight:600}}>{cp?"✅ Copied!":"📋 Copy Picks"}</button>
-          <button onClick={()=>setModal(true)} style={{width:"100%",padding:12,background:`linear-gradient(90deg,${G.go},${G.gd})`,border:"none",borderRadius:8,color:"#000",fontSize:13,fontWeight:800}}>📤 Send to Sportsbook</button>
-        </div>}
-      </div>}
-
-      </div>
-
-      {/* BOTTOM NAV */}
-      <div style={{position:"fixed",bottom:0,left:0,right:0,background:G.c1,borderTop:`1px solid ${G.br}`,display:"flex",zIndex:400}}>
-        {TABS.map(t=>{
-          const act=tab===t.id,badge=t.id==="slip"&&slip.length>0;
-          return<button key={t.id} onClick={()=>setTab(t.id)} style={{flex:1,padding:"10px 2px 12px",background:"none",border:"none",display:"flex",flexDirection:"column",alignItems:"center",gap:2,position:"relative"}}>
-            {badge&&<div style={{position:"absolute",top:6,right:"14%",background:G.go,color:"#000",borderRadius:"50%",width:16,height:16,display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900}}>{slip.length}</div>}
-            <span style={{fontSize:17}}>{t.i}</span>
-            <span style={{fontSize:7,fontWeight:700,color:act?G.go:G.t3}}>{t.l.toUpperCase()}</span>
-            {act&&<div style={{position:"absolute",top:0,left:"10%",right:"10%",height:2,background:G.go,borderRadius:"0 0 2px 2px"}}/>}
-          </button>;
-        })}
-      </div>
-
-      {modal&&<div style={{position:"fixed",inset:0,zIndex:999,background:"#000c",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setModal(false)}>
-        <div onClick={e=>e.stopPropagation()} style={{width:"100%",maxWidth:480,background:G.c1,border:`1px solid ${G.br}`,borderRadius:"16px 16px 0 0",overflow:"hidden"}}>
-          <div style={{width:36,height:4,background:G.br,borderRadius:2,margin:"10px auto 14px"}}/>
-          <div style={{padding:"0 18px 28px"}}>
-            <div style={{color:G.t1,fontWeight:700,fontSize:16,marginBottom:14}}>Send to Sportsbook</div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:14}}>
-              {PLAT.map(p=><a key={p.n} href={p.u} target="_blank" rel="noreferrer" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:"10px 4px",background:G.c2,border:`1px solid ${G.br}`,borderRadius:10,textDecoration:"none"}}>
-                <div style={{width:28,height:28,borderRadius:6,background:p.c+"22",display:"flex",alignItems:"center",justifyContent:"center",color:p.c,fontWeight:900,fontSize:8}}>{p.n.slice(0,2).toUpperCase()}</div>
-                <span style={{color:G.t2,fontSize:9,fontWeight:600,textAlign:"center"}}>{p.n}</span>
-              </a>)}
-            </div>
-            <div style={{color:G.t3,fontSize:9,textAlign:"center"}}>⚠️ 21+ only. Verify all lines. 1-800-GAMBLER</div>
-          </div>
-        </div>
-      </div>}
-    </div>
-  );
+function App(){
+const[tab,setTab]=useState(“board”);
+const[filter,setFilter]=useState(“l5”);
+const[range,setRange]=useState(10);
+const[rCat,setRCat]=useState(“All”);
+const[slip,setSlip]=useState([]);
+const[modal,setModal]=useState(false);
+const[cp,setCp]=useState(false);
+const cpRef=useRef();
+const add=item=>setSlip(p=>p.find(s=>s.key===item.key)?p.filter(s=>s.key!==item.key):[…p,item]);
+const rem=item=>setSlip(p=>p.filter(s=>s.key!==item.key));
+const val=p=>filter===“l5”?p.l5:filter===“l10”?p.l10:filter===“l25”?p.l25:filter===“streak”?p.streak:p.h2h;
+const den=filter===“l5”?5:filter===“l10”?10:filter===“l25”?25:10;
+const top100=BOARD.filter(p=>pct(val(p),den)>=80);
+const filtered=HIST.slice(0,range).filter(h=>rCat===“All”||h.cat===rCat);
+const wins=filtered.filter(h=>h.r===“WIN”).length;
+const hitPct=filtered.length?pct(wins,filtered.length):0;
+const avg=slip.length?Math.round(slip.reduce((a,s)=>a+s.conf,0)/slip.length):0;
+const txt=slip.map(s=>${s.pick} ${s.pname} ${s.lb} ${s.ln}).join(”\n”);
+const copy=()=>{try{if(cpRef.current){cpRef.current.select();document.execCommand(“copy”);}else navigator.clipboard?.writeText(txt);}catch{}setCp(true);setTimeout(()=>setCp(false),2000);};
+return<div style={{background:G.bg,minHeight:“100vh”,color:”#fff”,fontFamily:”‘Syne’,sans-serif”,paddingBottom:70}}>
+<div style={{background:G.bg,borderBottom:`1px solid ${G.br}`,position:"sticky",top:0,zIndex:300,padding:"0 14px",display:"flex",alignItems:"center",height:52,gap:10}}>
+<div style={{width:32,height:32,borderRadius:8,background:`linear-gradient(135deg,${G.go},${G.gd})`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>🐐</div>
+<div><div style={{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:900,fontSize:18,letterSpacing:2,color:G.go,lineHeight:1}}>XPERT PICKS</div><div style={{color:G.t3,fontSize:8,letterSpacing:1}}>PROPS & PARLAYS</div></div>
+<div style={{flex:1}}/>
+<div style={{display:"flex",alignItems:"center",gap:4}}><div style={{width:6,height:6,borderRadius:"50%",background:G.go,animation:"pulse 1.5s infinite"}}/><span style={{color:G.go,fontSize:10,fontWeight:700}}>LIVE</span></div>
+{slip.length>0&&<div style={{background:G.go,color:"#000",borderRadius:999,padding:"3px 10px",fontSize:11,fontWeight:800}}>{slip.length}</div>}
+</div><div style={{maxWidth:500,margin:"0 auto",padding:"14px 14px 0"}}>{tab===“board”&&<div>
+<div style={{display:"flex",gap:6,marginBottom:12,overflowX:"auto",paddingBottom:2}}>
+{[{id:"l5",lb:"L5"},{id:"l10",lb:"L10"},{id:"l25",lb:"L25"},{id:"streak",lb:"Streak"},{id:"h2h",lb:"H2H"}].map(f=><button key={f.id} onClick={()=>setFilter(f.id)} style={{padding:"6px 14px",borderRadius:999,fontSize:11,fontWeight:700,whiteSpace:"nowrap",background:filter===f.id?G.go:"transparent",border:`1.5px solid ${filter===f.id?G.go:G.br}`,color:filter===f.id?"#000":G.t2}}>{f.lb}</button>)}
+</div>
+{top100.length>0&&<div style={{background:G.c1,border:`2px solid ${G.go}44`,borderRadius:14,padding:14,marginBottom:12}}>
+<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}><span style={{fontSize:18}}>💯</span><div><div style={{color:G.go,fontWeight:800,fontSize:11,letterSpacing:1}}>THE 100</div><div style={{color:G.t3,fontSize:9}}>80%+ hit rate · tap to add</div></div></div>
+{top100.map((p,i)=>{const key=p.name+p.prop,ins=!!slip.find(s=>s.key===key),v=val(p),r=pct(v,den);
+return<div key={i} onClick={()=>add({key,pname:p.name,lb:p.prop,ln:p.line,pick:p.pick,conf:p.conf,gl:"Board"})} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",background:ins?G.g2:G.c2,border:`1px solid ${ins?G.go+"55":G.br}`,borderRadius:10,marginBottom:6,cursor:"pointer"}}>
+<span style={{color:G.t3,fontSize:12,fontWeight:700,width:16}}>{i+1}</span>
+<Photo name={p.name} size={34}/>
+<div style={{flex:1,minWidth:0}}><div style={{color:G.t1,fontWeight:700,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div><div style={{color:G.t3,fontSize:10}}>{p.pick} {p.line} {p.prop}</div></div>
+<div style={{textAlign:"right"}}><div style={{color:r===100?G.gr:G.go,fontWeight:900,fontSize:18,lineHeight:1}}>{r}%</div><div style={{color:G.t3,fontSize:9}}>{v}/{den}</div></div>
+</div>;})}
+</div>}
+<div style={{color:G.go,fontWeight:800,fontSize:11,letterSpacing:1,marginBottom:10}}>🏆 LEADERBOARD</div>
+{BOARD.map((p,i)=>{const v=val(p),r=pct(v,den),cc=r>=80?G.gr:r>=65?G.go:G.t2,key=p.name+p.prop,ins=!!slip.find(s=>s.key===key);
+return<div key={i} style={{background:G.c1,border:`1px solid ${ins?G.go+"55":G.br}`,borderRadius:12,padding:"12px 14px",marginBottom:8}}>
+<div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+<span style={{color:G.t3,fontSize:13,fontWeight:700,width:20}}>#{i+1}</span>
+<Photo name={p.name} size={42}/>
+<div style={{flex:1,minWidth:0}}><div style={{color:G.t1,fontWeight:700,fontSize:14,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div><div style={{color:G.t3,fontSize:10}}>{p.team} · {p.pick} {p.line} {p.prop}</div></div>
+<div style={{textAlign:"right"}}><div style={{color:cc,fontWeight:900,fontSize:22,lineHeight:1}}>{r}%</div><div style={{color:G.t3,fontSize:9}}>{v}/{den} {filter.toUpperCase()}</div></div>
+</div>
+<div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:4,marginBottom:8}}>
+{[{lb:"L5",v:p.l5,d:5},{lb:"L10",v:p.l10,d:10},{lb:"L25",v:p.l25,d:25},{lb:"Home",v:p.hl10,d:10},{lb:"Away",v:p.al10,d:10}].map(s=>{const rv=pct(s.v,s.d);return<div key={s.lb} style={{textAlign:"center",background:G.c2,borderRadius:6,padding:"6px 2px"}}><div style={{color:rv>=80?G.gr:rv>=65?G.go:G.t2,fontWeight:800,fontSize:12,lineHeight:1}}>{rv}%</div><div style={{color:G.t3,fontSize:7,marginTop:2}}>{s.lb}</div><div style={{height:3,background:G.c3,borderRadius:2,marginTop:3,overflow:"hidden"}}><div style={{width:`${rv}%`,height:"100%",background:rv>=80?G.gr:rv>=65?G.go:G.t3}}/></div></div>;})}
+</div>
+<div style={{display:"flex",gap:5,marginBottom:8}}>
+<div style={{flex:1,background:G.c2,borderRadius:6,padding:"6px 8px",textAlign:"center"}}><div style={{color:G.t2,fontSize:8,marginBottom:1}}>Streak</div><div style={{color:p.streak>=5?G.gr:G.go,fontWeight:700,fontSize:12}}>🔥 {p.streak}</div></div>
+<div style={{flex:1,background:G.c2,borderRadius:6,padding:"6px 8px",textAlign:"center"}}><div style={{color:G.t2,fontSize:8,marginBottom:1}}>H2H</div><div style={{color:p.h2h>=3?G.gr:G.go,fontWeight:700,fontSize:12}}>{p.h2h}/4</div></div>
+<div style={{flex:1,background:G.c2,borderRadius:6,padding:"6px 8px",textAlign:"center"}}><div style={{color:G.t2,fontSize:8,marginBottom:1}}>Conf</div><div style={{color:p.conf>=70?G.gr:G.go,fontWeight:700,fontSize:12}}>{p.conf}%</div></div>
+</div>
+<button onClick={()=>add({key,pname:p.name,lb:p.prop,ln:p.line,pick:p.pick,conf:p.conf,gl:"Board"})} style={{width:"100%",padding:"9px",background:ins?G.gr:`linear-gradient(90deg,${G.go},${G.gd})`,border:"none",borderRadius:8,color:"#000",fontSize:12,fontWeight:800}}>{ins?"✓ In Slip":"+ Add to Slip"}</button>
+</div>;})}
+</div>}{tab===“ai”&&<div>
+<div style={{background:`linear-gradient(135deg,${G.c1},${G.c2})`,border:`2px solid ${G.go}44`,borderRadius:14,padding:14,marginBottom:14}}>
+<div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:20}}>🤖</span><div><div style={{color:G.go,fontWeight:800,fontSize:12,letterSpacing:1}}>AI PICK ANALYSIS</div><div style={{color:G.t3,fontSize:9}}>Sharp money + historical data</div></div></div>
+</div>
+{BOARD.slice(0,5).map((p,i)=>{const key=p.name+p.prop,ins=!!slip.find(s=>s.key===key),cc=p.conf>=70?G.gr:p.conf>=63?G.go:G.t2;
+return<div key={i} style={{background:G.c1,border:`1px solid ${ins?G.go+"55":G.br}`,borderRadius:14,padding:14,marginBottom:10}}>
+<div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
+<Photo name={p.name} size={46}/>
+<div style={{flex:1,minWidth:0}}><div style={{color:G.t1,fontWeight:800,fontSize:16,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div><div style={{color:G.t3,fontSize:10}}>{p.team} · {p.prop}</div></div>
+<div style={{textAlign:"right"}}><div style={{color:cc,fontWeight:900,fontSize:24,lineHeight:1}}>{p.conf}%</div><div style={{color:G.t3,fontSize:9}}>confidence</div></div>
+</div>
+<div style={{background:`linear-gradient(135deg,#22c55e22,${G.c2})`,border:`1px solid ${G.gr}33`,borderRadius:10,padding:"10px 14px",marginBottom:12}}>
+<div style={{color:G.gr,fontWeight:900,fontSize:22,marginBottom:6}}>{p.pick} {p.line} {p.prop}</div>
+<div style={{color:p.conf>=70?"🔥 HIGH CONFIDENCE":G.go,fontSize:10,fontWeight:700,marginBottom:4}}>{p.conf>=70?"🔥 HIGH CONFIDENCE":p.conf>=63?"⚡ MEDIUM":"📊 STANDARD"}</div>
+<div style={{color:G.t2,fontSize:12,lineHeight:1.5}}>{p.name} has been hitting this line at {pct(p.l5,5)}% over the last 5. Current streak of {p.streak} in a row. {p.conf>=70?"Back this aggressively.":"Solid play."}</div>
+</div>
+<div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:10}}>
+{[{lb:"L5 Rate",v:`${pct(p.l5,5)}%`,c:p.l5===5?G.gr:G.go},{lb:"Streak",v:`🔥 ${p.streak}`,c:p.streak>=5?G.gr:G.go},{lb:"H2H",v:`${p.h2h}/4`,c:p.h2h>=3?G.gr:G.go}].map(s=><div key={s.lb} style={{textAlign:"center",background:G.c2,borderRadius:8,padding:"8px 4px",border:`1px solid ${G.br}`}}><div style={{color:s.c,fontWeight:800,fontSize:15,lineHeight:1}}>{s.v}</div><div style={{color:G.t3,fontSize:8,marginTop:2}}>{s.lb}</div></div>)}
+</div>
+<button onClick={()=>add({key,pname:p.name,lb:p.prop,ln:p.line,pick:p.pick,conf:p.conf,gl:"AI"})} style={{width:"100%",padding:"10px",background:ins?G.gr:`linear-gradient(90deg,${G.go},${G.gd})`,border:"none",borderRadius:8,color:"#000",fontSize:13,fontWeight:800}}>{ins?"✓ In Slip":"+ Add to Slip"}</button>
+</div>;})}
+</div>}{tab===“record”&&<div>
+<div style={{background:G.c1,borderRadius:14,padding:14,marginBottom:12,border:`1px solid ${G.br}`}}>
+<div style={{color:G.go,fontWeight:800,fontSize:11,letterSpacing:1,marginBottom:10}}>📊 TRACK RECORD</div>
+<div style={{display:"flex",gap:6,marginBottom:10,overflowX:"auto"}}>
+{[5,10,20,25].map(r=><button key={r} onClick={()=>setRange(r)} style={{padding:"6px 14px",borderRadius:999,fontSize:11,fontWeight:700,whiteSpace:"nowrap",background:range===r?G.go:"transparent",border:`1.5px solid ${range===r?G.go:G.br}`,color:range===r?"#000":G.t2}}>L{r}</button>)}
+</div>
+<div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginBottom:10}}>
+{[{lb:"Hit Rate",v:`${hitPct}%`,c:hitPct>=70?G.gr:G.go},{lb:"Wins",v:wins,c:G.gr},{lb:"Losses",v:filtered.length-wins,c:G.re},{lb:"Total",v:filtered.length,c:G.t1}].map(s=><div key={s.lb} style={{textAlign:"center",background:G.c2,borderRadius:8,padding:"8px 4px",border:`1px solid ${G.br}`}}><div style={{color:s.c,fontSize:20,fontWeight:900,lineHeight:1}}>{s.v}</div><div style={{color:G.t3,fontSize:8,marginTop:2}}>{s.lb}</div></div>)}
+</div>
+<div style={{height:8,background:G.c3,borderRadius:4,overflow:"hidden"}}><div style={{width:`${hitPct}%`,height:"100%",background:`linear-gradient(90deg,${G.go},${G.gr})`,borderRadius:4}}/></div>
+</div>
+<div style={{display:"flex",gap:5,marginBottom:10,overflowX:"auto"}}>
+{["All","Points","Rebounds","Assists","PRA","3PM","ML"].map(c=><button key={c} onClick={()=>setRCat(c)} style={{padding:"5px 12px",borderRadius:999,fontSize:10,fontWeight:700,whiteSpace:"nowrap",background:rCat===c?G.go:"transparent",border:`1px solid ${rCat===c?G.go:G.br}`,color:rCat===c?"#000":G.t2}}>{c}</button>)}
+</div>
+{filtered.map((h,i)=><div key={i} style={{background:G.c1,borderRadius:10,padding:"10px 14px",marginBottom:6,border:`1px solid ${h.r==="WIN"?G.gr+"33":G.re+"33"}`,display:"flex",alignItems:"center",gap:10}}>
+<span>{h.r==="WIN"?"✅":"❌"}</span>
+<div style={{flex:1,minWidth:0}}><div style={{color:G.t1,fontSize:12,fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{h.p}</div><div style={{color:G.t3,fontSize:10}}>{h.d} · {h.a}</div></div>
+<span style={{color:h.r==="WIN"?G.gr:G.re,fontWeight:800,fontSize:11}}>{h.r}</span>
+</div>)}
+</div>}{tab===“slip”&&<div style={{background:G.c1,border:1px solid ${G.br},borderRadius:12,overflow:“hidden”}}>
+<div style={{background:`linear-gradient(90deg,${G.go}22,transparent)`,borderBottom:`1px solid ${G.br}`,padding:"12px 14px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+<div style={{display:"flex",alignItems:"center",gap:8}}><span style={{color:G.t1,fontWeight:700,fontSize:14}}>Bet Slip</span>{slip.length>0&&<div style={{background:G.go,color:"#000",borderRadius:"50%",width:20,height:20,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:900}}>{slip.length}</div>}</div>
+{slip.length>0&&<button onClick={()=>slip.forEach(rem)} style={{background:"none",border:"none",color:G.t3,fontSize:11}}>Clear all</button>}
+</div>
+{slip.length===0?<div style={{padding:"36px 20px",textAlign:"center"}}><div style={{fontSize:30,marginBottom:10}}>🐐</div><div style={{color:G.t2,fontSize:13,fontWeight:600,marginBottom:4}}>Build your parlay</div><div style={{color:G.t3,fontSize:11}}>Add picks from Board or AI</div></div>:<div style={{padding:10}}>
+{slip.map((s,i)=><div key={i} style={{background:G.c2,borderRadius:8,padding:10,marginBottom:6,border:`1px solid ${G.br}`,position:"relative"}}>
+<button onClick={()=>rem(s)} style={{position:"absolute",top:8,right:8,background:"none",border:"none",color:G.t3,fontSize:18}}>×</button>
+<div style={{paddingRight:24}}><div style={{color:G.t1,fontWeight:700,fontSize:12}}>{s.pname}</div><div style={{color:G.t3,fontSize:10,marginBottom:4}}>{s.lb}</div>
+<div style={{display:"flex",alignItems:"center",gap:6}}><span style={{background:s.pick==="OVER"?"#22c55e15":"#ef444415",color:s.pick==="OVER"?G.gr:G.re,borderRadius:4,padding:"2px 8px",fontSize:11,fontWeight:700}}>{s.pick}</span><span style={{color:G.t1,fontWeight:800,fontSize:13}}>{s.ln}</span><span style={{color:G.go,fontSize:10,marginLeft:"auto",fontWeight:600}}>{s.conf}%</span></div>
+</div></div>)}
+<div style={{padding:"8px 4px",borderTop:`1px solid ${G.br}`,marginBottom:8}}>
+<div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}><span style={{color:G.t3,fontSize:11}}>Avg Confidence</span><span style={{color:G.go,fontWeight:700,fontSize:11}}>{avg}%</span></div>
+<div style={{display:"flex",justifyContent:"space-between"}}><span style={{color:G.t3,fontSize:11}}>Legs</span><span style={{color:G.t2,fontWeight:700,fontSize:11}}>{slip.length}</span></div>
+</div>
+<textarea ref={cpRef} readOnly value={txt} style={{position:"fixed",left:"-9999px",opacity:0}}/>
+<button onClick={copy} style={{width:"100%",padding:"9px",marginBottom:6,background:"transparent",border:`1.5px solid ${G.br}`,borderRadius:8,color:G.t2,fontSize:12,fontWeight:600}}>{cp?"✅ Copied!":"📋 Copy Picks"}</button>
+<button onClick={()=>setModal(true)} style={{width:"100%",padding:12,background:`linear-gradient(90deg,${G.go},${G.gd})`,border:"none",borderRadius:8,color:"#000",fontSize:13,fontWeight:800}}>📤 Send to Sportsbook</button>
+</div>}
+</div>}</div><div style={{position:"fixed",bottom:0,left:0,right:0,background:G.c1,borderTop:`1px solid ${G.br}`,display:"flex",zIndex:400}}>
+{TABS.map(t=>{const act=tab===t.id,badge=t.id==="slip"&&slip.length>0;
+return<button key={t.id} onClick={()=>setTab(t.id)} style={{flex:1,padding:"10px 2px 12px",background:"none",border:"none",display:"flex",flexDirection:"column",alignItems:"center",gap:2,position:"relative"}}>
+{badge&&<div style={{position:"absolute",top:6,right:"14%",background:G.go,color:"#000",borderRadius:"50%",width:16,height:16,display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900}}>{slip.length}</div>}
+<span style={{fontSize:17}}>{t.i}</span>
+<span style={{fontSize:7,fontWeight:700,color:act?G.go:G.t3}}>{t.l.toUpperCase()}</span>
+{act&&<div style={{position:"absolute",top:0,left:"10%",right:"10%",height:2,background:G.go,borderRadius:"0 0 2px 2px"}}/>}
+</button>;})}
+</div>{modal&&<div style={{position:“fixed”,inset:0,zIndex:999,background:”#000c”,display:“flex”,alignItems:“flex-end”,justifyContent:“center”}} onClick={()=>setModal(false)}>
+<div onClick={e=>e.stopPropagation()} style={{width:"100%",maxWidth:480,background:G.c1,border:`1px solid ${G.br}`,borderRadius:"16px 16px 0 0",overflow:"hidden"}}>
+<div style={{width:36,height:4,background:G.br,borderRadius:2,margin:"10px auto 14px"}}/>
+<div style={{padding:"0 18px 28px"}}>
+<div style={{color:G.t1,fontWeight:700,fontSize:16,marginBottom:14}}>Send to Sportsbook</div>
+<div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:14}}>
+{PLAT.map(p=><a key={p.n} href={p.u} target="_blank" rel="noreferrer" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:"10px 4px",background:G.c2,border:`1px solid ${G.br}`,borderRadius:10,textDecoration:"none"}}>
+<div style={{width:28,height:28,borderRadius:6,background:p.c+"22",display:"flex",alignItems:"center",justifyContent:"center",color:p.c,fontWeight:900,fontSize:8}}>{p.n.slice(0,2).toUpperCase()}</div>
+<span style={{color:G.t2,fontSize:9,fontWeight:600,textAlign:"center"}}>{p.n}</span>
+</a>)}
+</div>
+<div style={{color:G.t3,fontSize:9,textAlign:"center"}}>⚠️ 21+ only. Verify all lines. 1-800-GAMBLER</div>
+</div>
+</div>
+</div>}
+</div>;
 }
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script>
+</body>
+</html>
