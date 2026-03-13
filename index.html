@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en">
+cat > /mnt/user-data/outputs/index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
@@ -10,34 +12,39 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&family=Syne:wght@600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#080808;color:#fff;font-family:'Syne',sans-serif}
+body{background:#080808;color:#fff;font-family:Syne,sans-serif}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes spin{to{transform:rotate(360deg)}}
-button{outline:none;cursor:pointer;font-family:'Syne',sans-serif}
+button{outline:none;cursor:pointer}
 ::-webkit-scrollbar{display:none}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const{useState,useEffect,useCallback,useRef}=React;
-const K="ee50a545cebd1713b766d38fbf6be117";
-const BASE="https://api.the-odds-api.com/v4";
-const G={bg:"#080808",c1:"#0f0f0f",c2:"#161616",c3:"#1e1e1e",c4:"#252525",br:"#2a2a2a",go:"#e8941a",gd:"#c8781a",g1:"rgba(232,148,26,.1)",g2:"rgba(232,148,26,.2)",gr:"#22c55e",re:"#ef4444",t1:"#fff",t2:"#aaa",t3:"#555"};
-const NBA={"Alperen Sengun":1631167,"Domantas Sabonis":1627734,"Nikola Jokic":203999,"Luka Doncic":1629029,"Giannis Antetokounmpo":203507,"Josh Giddey":1630581,"Jamal Murray":1627750,"Jayson Tatum":1628369,"Karl-Anthony Towns":1626157,"Anthony Edwards":1630162,"Paolo Banchero":1631094,"Donovan Mitchell":1628378};
-const BOARD=[
-{name:"Alperen Sengun",team:"HOU",prop:"PRA",line:37.5,pick:"OVER",conf:78,l5:5,l10:9,l25:21,streak:6,h2h:3,hl10:8,al10:6},
-{name:"Domantas Sabonis",team:"SAC",prop:"Rebounds",line:13.5,pick:"OVER",conf:76,l5:5,l10:8,l25:20,streak:5,h2h:3,hl10:7,al10:7},
-{name:"Nikola Jokic",team:"DEN",prop:"PRA",line:52.5,pick:"OVER",conf:75,l5:4,l10:8,l25:21,streak:4,h2h:4,hl10:8,al10:7},
-{name:"Luka Doncic",team:"LAL",prop:"Points",line:28.5,pick:"OVER",conf:74,l5:5,l10:8,l25:19,streak:5,h2h:3,hl10:8,al10:6},
-{name:"Giannis Antetokounmpo",team:"MIL",prop:"Rebounds",line:11.5,pick:"OVER",conf:73,l5:4,l10:8,l25:20,streak:3,h2h:4,hl10:7,al10:7},
-{name:"Josh Giddey",team:"CHI",prop:"Assists",line:8.5,pick:"OVER",conf:70,l5:5,l10:8,l25:17,streak:5,h2h:2,hl10:7,al10:5},
-{name:"Jamal Murray",team:"DEN",prop:"Points",line:22.5,pick:"OVER",conf:69,l5:4,l10:7,l25:18,streak:2,h2h:3,hl10:7,al10:6},
-{name:"Jayson Tatum",team:"BOS",prop:"Points",line:26.5,pick:"OVER",conf:68,l5:3,l10:7,l25:17,streak:1,h2h:3,hl10:7,al10:5},
-{name:"Karl-Anthony Towns",team:"NYK",prop:"Rebounds",line:10.5,pick:"OVER",conf:67,l5:4,l10:7,l25:16,streak:4,h2h:2,hl10:6,al10:5},
-{name:"Anthony Edwards",team:"MIN",prop:"Points",line:25.5,pick:"OVER",conf:65,l5:3,l10:6,l25:16,streak:2,h2h:2,hl10:6,al10:5},
+var h=React.createElement;
+var useState=React.useState;
+var useEffect=React.useEffect;
+var useCallback=React.useCallback;
+var useRef=React.useRef;
+
+var K="ee50a545cebd1713b766d38fbf6be117";
+var BASE="https://api.the-odds-api.com/v4";
+
+var BOARD=[
+{name:"Alperen Sengun",team:"HOU",id:1631167,prop:"PRA",line:37.5,pick:"OVER",conf:78,l5:5,l10:9,l25:21,streak:6,h2h:3,hl10:8,al10:6},
+{name:"Domantas Sabonis",team:"SAC",id:1627734,prop:"Rebounds",line:13.5,pick:"OVER",conf:76,l5:5,l10:8,l25:20,streak:5,h2h:3,hl10:7,al10:7},
+{name:"Nikola Jokic",team:"DEN",id:203999,prop:"PRA",line:52.5,pick:"OVER",conf:75,l5:4,l10:8,l25:21,streak:4,h2h:4,hl10:8,al10:7},
+{name:"Luka Doncic",team:"LAL",id:1629029,prop:"Points",line:28.5,pick:"OVER",conf:74,l5:5,l10:8,l25:19,streak:5,h2h:3,hl10:8,al10:6},
+{name:"Giannis Antetokounmpo",team:"MIL",id:203507,prop:"Rebounds",line:11.5,pick:"OVER",conf:73,l5:4,l10:8,l25:20,streak:3,h2h:4,hl10:7,al10:7},
+{name:"Josh Giddey",team:"CHI",id:1630581,prop:"Assists",line:8.5,pick:"OVER",conf:70,l5:5,l10:8,l25:17,streak:5,h2h:2,hl10:7,al10:5},
+{name:"Jamal Murray",team:"DEN",id:1627750,prop:"Points",line:22.5,pick:"OVER",conf:69,l5:4,l10:7,l25:18,streak:2,h2h:3,hl10:7,al10:6},
+{name:"Jayson Tatum",team:"BOS",id:1628369,prop:"Points",line:26.5,pick:"OVER",conf:68,l5:3,l10:7,l25:17,streak:1,h2h:3,hl10:7,al10:5},
+{name:"Karl-Anthony Towns",team:"NYK",id:1626157,prop:"Rebounds",line:10.5,pick:"OVER",conf:67,l5:4,l10:7,l25:16,streak:4,h2h:2,hl10:6,al10:5},
+{name:"Anthony Edwards",team:"MIN",id:1630162,prop:"Points",line:25.5,pick:"OVER",conf:65,l5:3,l10:6,l25:16,streak:2,h2h:2,hl10:6,al10:5}
 ];
-const HIST=[
+
+var HIST=[
 {d:"Mar 13",p:"Luka OVER 8.5 Ast",r:"WIN",a:"11",cat:"Assists"},
 {d:"Mar 13",p:"Giddey OVER 8.5 Ast",r:"WIN",a:"10",cat:"Assists"},
 {d:"Mar 13",p:"Lakers ML",r:"WIN",a:"W",cat:"ML"},
@@ -52,211 +59,346 @@ const HIST=[
 {d:"Mar 8",p:"Harden OVER 8.5 Ast",r:"WIN",a:"11",cat:"Assists"},
 {d:"Mar 8",p:"LaMelo OVER 7.5 Ast",r:"LOSS",a:"6",cat:"Assists"},
 {d:"Mar 7",p:"Banchero OVER 21.5 Pts",r:"WIN",a:"26",cat:"Points"},
-{d:"Mar 7",p:"Kawhi OVER 21.5 Pts",r:"WIN",a:"24",cat:"Points"},
+{d:"Mar 7",p:"Kawhi OVER 21.5 Pts",r:"WIN",a:"24",cat:"Points"}
 ];
-const PLAT=[{n:"FanDuel",c:"#1a91ff",u:"https://sportsbook.fanduel.com"},{n:"DraftKings",c:"#53d337",u:"https://sportsbook.draftkings.com"},{n:"PrizePicks",c:"#9333ea",u:"https://app.prizepicks.com"},{n:"BetMGM",c:"#d4a843",u:"https://sports.betmgm.com"},{n:"Caesars",c:"#3b82f6",u:"https://sportsbook.caesars.com"},{n:"ESPN Bet",c:"#ef4444",u:"https://espnbet.com"}];
-const SP={NBA:{k:"basketball_nba",i:"🏀"},NFL:{k:"americanfootball_nfl",i:"🏈"},MLB:{k:"baseball_mlb",i:"⚾"},NHL:{k:"icehockey_nhl",i:"🏒"}};
-const fo=o=>o?(o>0?`+${o}`:`${o}`):"--";
-const pct=(n,d)=>Math.round(n/d*100);
-const TABS=[{id:"board",i:"🏆",l:"Board"},{id:"props",i:"📊",l:"Props"},{id:"ai",i:"🤖",l:"AI"},{id:"record",i:"📈",l:"Record"},{id:"slip",i:"📋",l:"Slip"}];function Photo({name,size=38}){
-const[err,setErr]=useState(false);
-const id=NBA[name];
-const ini=name.split(” “).map(w=>w[0]).join(””).slice(0,2);
-if(!id||err)return <div style={{width:size,height:size,borderRadius:size*.28,flexShrink:0,background:“linear-gradient(135deg,#e8941a44,#e8941a11)”,border:“1.5px solid #e8941a33”,display:“flex”,alignItems:“center”,justifyContent:“center”,fontWeight:900,fontSize:size*.36,color:”#e8941a”}}>{ini}</div>;
-return <img src={“https://cdn.nba.com/headshots/nba/latest/1040x760/”+id+”.png”} onError={()=>setErr(true)} style={{width:size,height:size,borderRadius:size*.28,objectFit:“cover”,objectPosition:“top”,flexShrink:0,border:“1.5px solid #e8941a33”,background:”#1e1e1e”}}/>;
-}
-async function getGames(sk){
-try{
-const r=await fetch(BASE+”/sports/”+sk+”/odds?apiKey=”+K+”&regions=us&markets=h2h,spreads,totals&oddsFormat=american”);
-const d=await r.json();
-const sc=await fetch(BASE+”/sports/”+sk+”/scores?apiKey=”+K+”&daysFrom=1”).then(r=>r.json()).catch(()=>[]);
-return(d||[]).map(g=>{
-const s=sc.find(x=>x.id===g.id),live=s?.completed===false&&s?.scores!=null,done=s?.completed;
-let sp=null,tot=null,hml=null,aml=null;
-const bk=g.bookmakers?.find(b=>b.key===“fanduel”)||g.bookmakers?.[0];
-bk?.markets?.forEach(m=>{
-if(m.key===“spreads”){const h=m.outcomes.find(o=>o.name===g.home_team);if(h)sp=(h.point>0?”+”:””)+h.point;}
-if(m.key===“totals”){const ov=m.outcomes.find(o=>o.name===“Over”);if(ov)tot=ov.point;}
-if(m.key===“h2h”){hml=m.outcomes.find(o=>o.name===g.home_team)?.price;aml=m.outcomes.find(o=>o.name===g.away_team)?.price;}
-});
-const aS=s?.scores?.find(x=>x.name===g.away_team)?.score,hS=s?.scores?.find(x=>x.name===g.home_team)?.score;
-return{id:g.id,sport:sk,away:g.away_team.split(” “).pop(),home:g.home_team.split(” “).pop(),
-time:live?“LIVE “+aS+”-”+hS:done?“Final “+aS+”-”+hS:new Date(g.commence_time).toLocaleTimeString(“en-US”,{hour:“numeric”,minute:“2-digit”,timeZoneName:“short”}),
-status:live?“LIVE”:done?“FINAL”:“UP”,sp,tot,hml:fo(hml),aml:fo(aml)};
-}).filter(g=>g.status!==“FINAL”).sort((a,b)=>a.status===“LIVE”?-1:1);
-}catch(e){return[];}
-}
-function App(){
-const[tab,setTab]=useState(“board”);
-const[sport,setSport]=useState(“NBA”);
-const[games,setGames]=useState({});
-const[loading,setLoading]=useState(true);
-const[slip,setSlip]=useState([]);
-const[modal,setModal]=useState(false);
-const[filter,setFilter]=useState(“l5”);
-const[range,setRange]=useState(10);
-const[rcat,setRcat]=useState(“All”);
-const[updated,setUpdated]=useState(null);
-const cpRef=useRef();
-const load=useCallback(async()=>{
-setLoading(true);
-const res={};
-await Promise.all(Object.entries(SP).map(async([s,c])=>{res[s]=await getGames(c.k);}));
-setGames(res);setUpdated(new Date());setLoading(false);
-},[]);
-useEffect(()=>{load();const iv=setInterval(load,180000);return()=>clearInterval(iv);},[]);
-const add=item=>setSlip(p=>p.find(s=>s.key===item.key)?p.filter(s=>s.key!==item.key):[…p,item]);
-const rem=item=>setSlip(p=>p.filter(s=>s.key!==item.key));
-const val=p=>filter===“l5”?p.l5:filter===“l10”?p.l10:filter===“l25”?p.l25:filter===“streak”?p.streak:p.h2h;
-const den=filter===“l5”?5:filter===“l10”?10:filter===“l25”?25:10;
-const top=BOARD.filter(p=>pct(val(p),den)>=80);
-const hist=HIST.slice(0,range).filter(h=>rcat===“All”||h.cat===rcat);
-const wins=hist.filter(h=>h.r===“WIN”).length;
-const hp=hist.length?pct(wins,hist.length):0;
-const avg=slip.length?Math.round(slip.reduce((a,s)=>a+s.conf,0)/slip.length):0;
-const txt=slip.map(s=>s.pick+” “+s.pname+” “+s.lb+(s.ln?” “+s.ln:””)).join(”\n”);
-const live=Object.values(games).flat().filter(g=>g.status===“LIVE”).length;
-const copy=()=>{
-try{if(cpRef.current){cpRef.current.select();document.execCommand(“copy”);}else{navigator.clipboard.writeText(txt);}}
-catch(e){}
+
+var PLAT=[
+{n:"FanDuel",c:"#1a91ff",u:"https://sportsbook.fanduel.com"},
+{n:"DraftKings",c:"#53d337",u:"https://sportsbook.draftkings.com"},
+{n:"PrizePicks",c:"#9333ea",u:"https://app.prizepicks.com"},
+{n:"BetMGM",c:"#d4a843",u:"https://sports.betmgm.com"},
+{n:"Caesars",c:"#3b82f6",u:"https://sportsbook.caesars.com"},
+{n:"ESPN Bet",c:"#ef4444",u:"https://espnbet.com"}
+];
+
+var SP={
+NBA:{k:"basketball_nba",i:"🏀"},
+NFL:{k:"americanfootball_nfl",i:"🏈"},
+MLB:{k:"baseball_mlb",i:"⚾"},
+NHL:{k:"icehockey_nhl",i:"🏒"}
 };
-return <div style={{background:”#080808”,minHeight:“100vh”,paddingBottom:70,color:”#fff”,fontFamily:”‘Syne’,sans-serif”}}>
-<style>{"*{box-sizing:border-box;margin:0;padding:0}button{outline:none;cursor:pointer}::-webkit-scrollbar{display:none}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}@keyframes spin{to{transform:rotate(360deg)}}"}</style><div style={{background:"#080808",borderBottom:"1px solid #2a2a2a",position:"sticky",top:0,zIndex:300,padding:"0 14px",display:"flex",alignItems:"center",height:52,gap:10}}>
-<div style={{width:32,height:32,borderRadius:8,background:"linear-gradient(135deg,#e8941a,#c8781a)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>🐐</div>
-<div><div style={{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:900,fontSize:18,letterSpacing:2,color:"#e8941a",lineHeight:1}}>XPERT PICKS</div><div style={{color:"#555",fontSize:8,letterSpacing:1}}>PROPS & PARLAYS</div></div>
-<div style={{flex:1}}/>
-{updated&&<span style={{color:"#555",fontSize:9}}>{updated.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"})}</span>}
-<button onClick={load} style={{background:"none",border:"1px solid #2a2a2a",borderRadius:6,padding:"4px 10px",color:"#aaa",fontSize:11}}>{loading?"...":"↻"}</button>
-{live>0&&<div style={{display:"flex",alignItems:"center",gap:4}}><div style={{width:6,height:6,borderRadius:"50%",background:"#e8941a",animation:"pulse 1.5s infinite"}}/><span style={{color:"#e8941a",fontSize:10,fontWeight:700}}>{live} LIVE</span></div>}
-{slip.length>0&&<div style={{background:"#e8941a",color:"#000",borderRadius:999,padding:"3px 10px",fontSize:11,fontWeight:800}}>{slip.length}</div>}
-</div><div style={{maxWidth:560,margin:"0 auto",padding:"14px 14px 0"}}>{tab===“board”&&<div>
-<div style={{display:"flex",gap:6,marginBottom:12,overflowX:"auto",paddingBottom:2}}>
-{[{id:"l5",lb:"L5"},{id:"l10",lb:"L10"},{id:"l25",lb:"L25"},{id:"streak",lb:"Streak"},{id:"h2h",lb:"H2H"}].map(f=><button key={f.id} onClick={()=>setFilter(f.id)} style={{padding:"6px 14px",borderRadius:999,fontSize:11,fontWeight:700,whiteSpace:"nowrap",background:filter===f.id?"#e8941a":"transparent",border:"1.5px solid "+(filter===f.id?"#e8941a":"#2a2a2a"),color:filter===f.id?"#000":"#aaa"}}>{f.lb}</button>)}
-</div>
-{top.length>0&&<div style={{background:"#0f0f0f",border:"2px solid rgba(232,148,26,.3)",borderRadius:14,padding:14,marginBottom:12}}>
-<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}><span style={{fontSize:18}}>💯</span><div><div style={{color:"#e8941a",fontWeight:800,fontSize:11,letterSpacing:1}}>THE 100 — 80%+ HIT RATE</div><div style={{color:"#555",fontSize:9}}>Tap to add to slip</div></div></div>
-{top.map((p,i)=>{const key=p.name+p.prop,ins=!!slip.find(s=>s.key===key),v=val(p),r=pct(v,den);
-return <div key={i} onClick={()=>add({key,pname:p.name,lb:p.prop,ln:p.line,pick:p.pick,conf:p.conf,gl:"Board"})} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",background:ins?"rgba(232,148,26,.2)":"#161616",border:"1px solid "+(ins?"#e8941a88":"#2a2a2a"),borderRadius:10,marginBottom:6,cursor:"pointer"}}>
-<span style={{color:"#555",fontSize:12,fontWeight:700,width:16}}>{i+1}</span>
-<Photo name={p.name} size={34}/>
-<div style={{flex:1,minWidth:0}}><div style={{color:"#fff",fontWeight:700,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div><div style={{color:"#555",fontSize:10}}>{p.pick} {p.line} {p.prop}</div></div>
-<div style={{textAlign:"right"}}><div style={{color:r===100?"#22c55e":"#e8941a",fontWeight:900,fontSize:18,lineHeight:1}}>{r}%</div><div style={{color:"#555",fontSize:9}}>{v}/{den}</div></div>
-</div>;})}
-</div>}
-<div style={{color:"#e8941a",fontWeight:800,fontSize:11,letterSpacing:1,marginBottom:10}}>🏆 FULL LEADERBOARD</div>
-{BOARD.map((p,i)=>{const v=val(p),r=pct(v,den),cc=r>=80?"#22c55e":r>=65?"#e8941a":"#aaa",key=p.name+p.prop,ins=!!slip.find(s=>s.key===key);
-return <div key={i} style={{background:"#0f0f0f",border:"1px solid "+(ins?"#e8941a88":"#2a2a2a"),borderRadius:12,padding:"12px 14px",marginBottom:8}}>
-<div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
-<span style={{color:"#555",fontSize:13,fontWeight:700,width:20}}>#{i+1}</span>
-<Photo name={p.name} size={42}/>
-<div style={{flex:1,minWidth:0}}><div style={{color:"#fff",fontWeight:700,fontSize:14,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div><div style={{color:"#555",fontSize:10}}>{p.team} · {p.pick} {p.line} {p.prop}</div></div>
-<div style={{textAlign:"right"}}><div style={{color:cc,fontWeight:900,fontSize:22,lineHeight:1}}>{r}%</div><div style={{color:"#555",fontSize:9}}>{v}/{den} {filter.toUpperCase()}</div></div>
-</div>
-<div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:4,marginBottom:8}}>
-{[{lb:"L5",v:p.l5,d:5},{lb:"L10",v:p.l10,d:10},{lb:"L25",v:p.l25,d:25},{lb:"Home",v:p.hl10,d:10},{lb:"Away",v:p.al10,d:10}].map(s=>{const rv=pct(s.v,s.d);return <div key={s.lb} style={{textAlign:"center",background:"#161616",borderRadius:6,padding:"6px 2px"}}><div style={{color:rv>=80?"#22c55e":rv>=65?"#e8941a":"#aaa",fontWeight:800,fontSize:12,lineHeight:1}}>{rv}%</div><div style={{color:"#555",fontSize:7,marginTop:2}}>{s.lb}</div><div style={{height:3,background:"#252525",borderRadius:2,marginTop:3,overflow:"hidden"}}><div style={{width:rv+"%",height:"100%",background:rv>=80?"#22c55e":rv>=65?"#e8941a":"#555"}}/></div></div>;})}
-</div>
-<div style={{display:"flex",gap:5,marginBottom:8}}>
-<div style={{flex:1,background:"#161616",borderRadius:6,padding:"6px 8px",textAlign:"center"}}><div style={{color:"#aaa",fontSize:8,marginBottom:1}}>Streak</div><div style={{color:p.streak>=5?"#22c55e":"#e8941a",fontWeight:700,fontSize:12}}>🔥 {p.streak}</div></div>
-<div style={{flex:1,background:"#161616",borderRadius:6,padding:"6px 8px",textAlign:"center"}}><div style={{color:"#aaa",fontSize:8,marginBottom:1}}>H2H</div><div style={{color:p.h2h>=3?"#22c55e":"#e8941a",fontWeight:700,fontSize:12}}>{p.h2h}/4</div></div>
-<div style={{flex:1,background:"#161616",borderRadius:6,padding:"6px 8px",textAlign:"center"}}><div style={{color:"#aaa",fontSize:8,marginBottom:1}}>Conf</div><div style={{color:p.conf>=70?"#22c55e":"#e8941a",fontWeight:700,fontSize:12}}>{p.conf}%</div></div>
-</div>
-<button onClick={()=>add({key,pname:p.name,lb:p.prop,ln:p.line,pick:p.pick,conf:p.conf,gl:"Board"})} style={{width:"100%",padding:"9px",background:ins?"#22c55e":"linear-gradient(90deg,#e8941a,#c8781a)",border:"none",borderRadius:8,color:"#000",fontSize:12,fontWeight:800}}>{ins?"✓ In Slip":"+ Add to Slip"}</button>
-</div>;})}
-</div>}{tab===“props”&&<div>
-<div style={{display:"flex",gap:6,marginBottom:12,overflowX:"auto",paddingBottom:4}}>
-{Object.entries(SP).map(([s,c])=><button key={s} onClick={()=>setSport(s)} style={{padding:"7px 14px",borderRadius:999,fontSize:12,fontWeight:700,whiteSpace:"nowrap",background:sport===s?"#e8941a":"transparent",border:"1.5px solid "+(sport===s?"#e8941a":"#2a2a2a"),color:sport===s?"#000":"#aaa"}}>{c.i} {s} {games[s]?.length?"("+games[s].length+")":""}</button>)}
-</div>
-{loading?<div style={{textAlign:"center",padding:"60px"}}><span style={{fontSize:30,display:"inline-block",animation:"spin 1s linear infinite"}}>⚡</span></div>:(games[sport]||[]).length===0?<div style={{color:"#555",fontSize:13,textAlign:"center",padding:40}}>No {sport} games right now</div>:(games[sport]||[]).map(g=><div key={g.id} style={{background:"#0f0f0f",border:"1px solid "+(g.status==="LIVE"?"#e8941a88":"#2a2a2a"),borderRadius:14,marginBottom:8,padding:"13px 15px"}}>
-<div style={{display:"flex",alignItems:"center",gap:10}}>
-<span style={{fontSize:20}}>{SP[g.sport]?.i}</span>
-<div style={{flex:1}}><div style={{color:"#fff",fontWeight:700,fontSize:15,marginBottom:3}}>{g.away} @ {g.home}</div><div style={{display:"flex",gap:10,flexWrap:"wrap"}}><span style={{color:g.status==="LIVE"?"#e8941a":"#555",fontSize:11}}>{g.time}</span>{g.sp&&<span style={{color:"#555",fontSize:11}}>Spd <span style={{color:"#aaa"}}>{g.sp}</span></span>}{g.tot&&<span style={{color:"#555",fontSize:11}}>O/U <span style={{color:"#aaa"}}>{g.tot}</span></span>}</div></div>
-<div style={{textAlign:"right"}}><div style={{color:"#555",fontSize:9}}>ML</div><div style={{color:"#22c55e",fontSize:11,fontWeight:700}}>{g.hml}</div><div style={{color:"#aaa",fontSize:11}}>{g.aml}</div></div>
-</div>
-</div>)}
-</div>}{tab===“ai”&&<div>
-<div style={{background:"linear-gradient(135deg,#0f0f0f,#161616)",border:"2px solid rgba(232,148,26,.3)",borderRadius:14,padding:14,marginBottom:14}}>
-<div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:20}}>🤖</span><div><div style={{color:"#e8941a",fontWeight:800,fontSize:12,letterSpacing:1}}>AI PICK ANALYSIS</div><div style={{color:"#555",fontSize:9}}>Sharp money + historical data</div></div></div>
-</div>
-{BOARD.slice(0,5).map((p,i)=>{const key=p.name+p.prop,ins=!!slip.find(s=>s.key===key),cc=p.conf>=70?"#22c55e":p.conf>=63?"#e8941a":"#aaa";
-return <div key={i} style={{background:"#0f0f0f",border:"1px solid "+(ins?"#e8941a88":"#2a2a2a"),borderRadius:14,padding:14,marginBottom:10}}>
-<div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
-<Photo name={p.name} size={46}/>
-<div style={{flex:1,minWidth:0}}><div style={{color:"#fff",fontWeight:800,fontSize:16,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div><div style={{color:"#555",fontSize:10}}>{p.team} · {p.prop}</div></div>
-<div style={{textAlign:"right"}}><div style={{color:cc,fontWeight:900,fontSize:24,lineHeight:1}}>{p.conf}%</div><div style={{color:"#555",fontSize:9}}>confidence</div></div>
-</div>
-<div style={{background:"linear-gradient(135deg,#22c55e22,#161616)",border:"1px solid #22c55e33",borderRadius:10,padding:"10px 14px",marginBottom:12}}>
-<div style={{color:"#22c55e",fontWeight:900,fontSize:22,marginBottom:6}}>{p.pick} {p.line} {p.prop}</div>
-<div style={{color:p.conf>=70?"#e8941a":"#aaa",fontSize:10,fontWeight:700,marginBottom:4}}>{p.conf>=70?"🔥 HIGH CONFIDENCE":p.conf>=63?"⚡ MEDIUM":"📊 STANDARD"}</div>
-<div style={{color:"#aaa",fontSize:12,lineHeight:1.5}}>{p.name} hitting at {pct(p.l5,5)}% L5 with a streak of {p.streak}. {p.conf>=70?"Back this aggressively.":"Solid play."}</div>
-</div>
-<div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:10}}>
-{[{lb:"L5 Rate",v:pct(p.l5,5)+"%",c:p.l5===5?"#22c55e":"#e8941a"},{lb:"Streak",v:"🔥 "+p.streak,c:p.streak>=5?"#22c55e":"#e8941a"},{lb:"H2H",v:p.h2h+"/4",c:p.h2h>=3?"#22c55e":"#e8941a"}].map(s=><div key={s.lb} style={{textAlign:"center",background:"#161616",borderRadius:8,padding:"8px 4px",border:"1px solid #2a2a2a"}}><div style={{color:s.c,fontWeight:800,fontSize:15,lineHeight:1}}>{s.v}</div><div style={{color:"#555",fontSize:8,marginTop:2}}>{s.lb}</div></div>)}
-</div>
-<button onClick={()=>add({key,pname:p.name,lb:p.prop,ln:p.line,pick:p.pick,conf:p.conf,gl:"AI"})} style={{width:"100%",padding:"10px",background:ins?"#22c55e":"linear-gradient(90deg,#e8941a,#c8781a)",border:"none",borderRadius:8,color:"#000",fontSize:13,fontWeight:800}}>{ins?"✓ In Slip":"+ Add to Slip"}</button>
-</div>;})}
-</div>}{tab===“record”&&<div>
-<div style={{background:"#0f0f0f",borderRadius:14,padding:14,marginBottom:12,border:"1px solid #2a2a2a"}}>
-<div style={{color:"#e8941a",fontWeight:800,fontSize:11,letterSpacing:1,marginBottom:10}}>📊 TRACK RECORD</div>
-<div style={{display:"flex",gap:6,marginBottom:10,overflowX:"auto"}}>
-{[5,10,20,25].map(r=><button key={r} onClick={()=>setRange(r)} style={{padding:"6px 14px",borderRadius:999,fontSize:11,fontWeight:700,whiteSpace:"nowrap",background:range===r?"#e8941a":"transparent",border:"1.5px solid "+(range===r?"#e8941a":"#2a2a2a"),color:range===r?"#000":"#aaa"}}>L{r}</button>)}
-</div>
-<div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginBottom:10}}>
-{[{lb:"Hit Rate",v:hp+"%",c:hp>=70?"#22c55e":"#e8941a"},{lb:"Wins",v:wins,c:"#22c55e"},{lb:"Losses",v:hist.length-wins,c:"#ef4444"},{lb:"Total",v:hist.length,c:"#fff"}].map(s=><div key={s.lb} style={{textAlign:"center",background:"#161616",borderRadius:8,padding:"8px 4px",border:"1px solid #2a2a2a"}}><div style={{color:s.c,fontSize:20,fontWeight:900,lineHeight:1}}>{s.v}</div><div style={{color:"#555",fontSize:8,marginTop:2}}>{s.lb}</div></div>)}
-</div>
-<div style={{height:8,background:"#252525",borderRadius:4,overflow:"hidden"}}><div style={{width:hp+"%",height:"100%",background:"linear-gradient(90deg,#e8941a,#22c55e)",borderRadius:4}}/></div>
-</div>
-<div style={{display:"flex",gap:5,marginBottom:10,overflowX:"auto"}}>
-{["All","Points","Rebounds","Assists","PRA","3PM","ML"].map(c=><button key={c} onClick={()=>setRcat(c)} style={{padding:"5px 12px",borderRadius:999,fontSize:10,fontWeight:700,whiteSpace:"nowrap",background:rcat===c?"#e8941a":"transparent",border:"1px solid "+(rcat===c?"#e8941a":"#2a2a2a"),color:rcat===c?"#000":"#aaa"}}>{c}</button>)}
-</div>
-{hist.map((h,i)=><div key={i} style={{background:"#0f0f0f",borderRadius:10,padding:"10px 14px",marginBottom:6,border:"1px solid "+(h.r==="WIN"?"#22c55e33":"#ef444433"),display:"flex",alignItems:"center",gap:10}}>
-<span>{h.r==="WIN"?"✅":"❌"}</span>
-<div style={{flex:1,minWidth:0}}><div style={{color:"#fff",fontSize:12,fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{h.p}</div><div style={{color:"#555",fontSize:10}}>{h.d} · {h.a}</div></div>
-<span style={{color:h.r==="WIN"?"#22c55e":"#ef4444",fontWeight:800,fontSize:11}}>{h.r}</span>
-</div>)}
-</div>}{tab===“slip”&&<div style={{background:”#0f0f0f”,border:“1px solid #2a2a2a”,borderRadius:12,overflow:“hidden”}}>
-<div style={{background:"linear-gradient(90deg,rgba(232,148,26,.15),transparent)",borderBottom:"1px solid #2a2a2a",padding:"12px 14px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-<div style={{display:"flex",alignItems:"center",gap:8}}><span style={{color:"#fff",fontWeight:700,fontSize:14}}>Bet Slip</span>{slip.length>0&&<div style={{background:"#e8941a",color:"#000",borderRadius:"50%",width:20,height:20,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:900}}>{slip.length}</div>}</div>
-{slip.length>0&&<button onClick={()=>slip.forEach(rem)} style={{background:"none",border:"none",color:"#555",fontSize:11}}>Clear all</button>}
-</div>
-{slip.length===0?<div style={{padding:"36px 20px",textAlign:"center"}}><div style={{fontSize:30,marginBottom:10}}>🐐</div><div style={{color:"#aaa",fontSize:13,fontWeight:600,marginBottom:4}}>Build your parlay</div><div style={{color:"#555",fontSize:11}}>Add picks from Board or AI</div></div>:<div style={{padding:10}}>
-{slip.map((s,i)=><div key={i} style={{background:"#161616",borderRadius:8,padding:10,marginBottom:6,border:"1px solid #2a2a2a",position:"relative"}}>
-<button onClick={()=>rem(s)} style={{position:"absolute",top:8,right:8,background:"none",border:"none",color:"#555",fontSize:18}}>x</button>
-<div style={{paddingRight:24}}><div style={{color:"#fff",fontWeight:700,fontSize:12}}>{s.pname}</div><div style={{color:"#555",fontSize:10,marginBottom:4}}>{s.lb}</div>
-<div style={{display:"flex",alignItems:"center",gap:6}}><span style={{background:s.pick==="OVER"?"#22c55e15":"#ef444415",color:s.pick==="OVER"?"#22c55e":"#ef4444",borderRadius:4,padding:"2px 8px",fontSize:11,fontWeight:700}}>{s.pick}</span>{s.ln&&<span style={{color:"#fff",fontWeight:800,fontSize:13}}>{s.ln}</span>}<span style={{color:"#e8941a",fontSize:10,marginLeft:"auto",fontWeight:600}}>{s.conf}%</span></div>
-</div></div>)}
-<div style={{padding:"8px 4px",borderTop:"1px solid #2a2a2a",marginBottom:8}}>
-<div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}><span style={{color:"#555",fontSize:11}}>Avg Confidence</span><span style={{color:"#e8941a",fontWeight:700,fontSize:11}}>{avg}%</span></div>
-<div style={{display:"flex",justifyContent:"space-between"}}><span style={{color:"#555",fontSize:11}}>Legs</span><span style={{color:"#aaa",fontWeight:700,fontSize:11}}>{slip.length}</span></div>
-</div>
-<textarea ref={cpRef} readOnly value={txt} style={{position:"fixed",left:"-9999px",opacity:0}}/>
-<button onClick={copy} style={{width:"100%",padding:"9px",marginBottom:6,background:"transparent",border:"1.5px solid #2a2a2a",borderRadius:8,color:"#aaa",fontSize:12,fontWeight:600}}>📋 Copy Picks</button>
-<button onClick={()=>setModal(true)} style={{width:"100%",padding:12,background:"linear-gradient(90deg,#e8941a,#c8781a)",border:"none",borderRadius:8,color:"#000",fontSize:13,fontWeight:800}}>📤 Send to Sportsbook</button>
-</div>}
-</div>}</div><div style={{position:"fixed",bottom:0,left:0,right:0,background:"#0f0f0f",borderTop:"1px solid #2a2a2a",display:"flex",zIndex:400}}>
-{TABS.map(t=>{const act=tab===t.id,badge=t.id==="slip"&&slip.length>0;
-return <button key={t.id} onClick={()=>setTab(t.id)} style={{flex:1,padding:"10px 2px 12px",background:"none",border:"none",display:"flex",flexDirection:"column",alignItems:"center",gap:2,position:"relative"}}>
-{badge&&<div style={{position:"absolute",top:6,right:"14%",background:"#e8941a",color:"#000",borderRadius:"50%",width:16,height:16,display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900}}>{slip.length}</div>}
-<span style={{fontSize:17}}>{t.i}</span>
-<span style={{fontSize:7,fontWeight:700,color:act?"#e8941a":"#555"}}>{t.l.toUpperCase()}</span>
-{act&&<div style={{position:"absolute",top:0,left:"10%",right:"10%",height:2,background:"#e8941a",borderRadius:"0 0 2px 2px"}}/>}
-</button>;})}
-</div>{modal&&<div style={{position:“fixed”,inset:0,zIndex:999,background:“rgba(0,0,0,.85)”,display:“flex”,alignItems:“flex-end”,justifyContent:“center”}} onClick={()=>setModal(false)}>
-<div onClick={e=>e.stopPropagation()} style={{width:"100%",maxWidth:480,background:"#0f0f0f",border:"1px solid #2a2a2a",borderRadius:"16px 16px 0 0",overflow:"hidden"}}>
-<div style={{width:36,height:4,background:"#2a2a2a",borderRadius:2,margin:"10px auto 14px"}}/>
-<div style={{padding:"0 18px 28px"}}>
-<div style={{color:"#fff",fontWeight:700,fontSize:16,marginBottom:14}}>Send to Sportsbook</div>
-<div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:14}}>
-{PLAT.map(p=><a key={p.n} href={p.u} target="_blank" rel="noreferrer" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:"10px 4px",background:"#161616",border:"1px solid #2a2a2a",borderRadius:10,textDecoration:"none"}}>
-<div style={{width:28,height:28,borderRadius:6,background:p.c+"22",display:"flex",alignItems:"center",justifyContent:"center",color:p.c,fontWeight:900,fontSize:8}}>{p.n.slice(0,2).toUpperCase()}</div>
-<span style={{color:"#aaa",fontSize:9,fontWeight:600,textAlign:"center"}}>{p.n}</span>
-</a>)}
-</div>
-<div style={{color:"#555",fontSize:9,textAlign:"center"}}>21+ only. Verify all lines. 1-800-GAMBLER</div>
-</div>
-</div>
-</div>}
-</div>;
-}ReactDOM.createRoot(document.getElementById(“root”)).render(React.createElement(App));
+
+function pct(n,d){return Math.round(n/d*100);}
+function fo(o){if(!o)return "--"; return o>0?"+"+o:""+o;}
+
+var TABS=[{id:"board",i:"🏆",l:"Board"},{id:"props",i:"📊",l:"Props"},{id:"ai",i:"🤖",l:"AI"},{id:"record",i:"📈",l:"Record"},{id:"slip",i:"📋",l:"Slip"}];
+
+function Photo(props){
+  var name=props.name, size=props.size||38;
+  var s=useState(false);
+  var err=s[0], setErr=s[1];
+  var p=BOARD.find(function(b){return b.name===name;});
+  var ini=name.split(" ").map(function(w){return w[0];}).join("").slice(0,2);
+  if(!p||err){
+    return h("div",{style:{width:size,height:size,borderRadius:size*.28,flexShrink:0,background:"linear-gradient(135deg,#e8941a44,#e8941a11)",border:"1.5px solid #e8941a33",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:size*.36,color:"#e8941a"}},ini);
+  }
+  return h("img",{src:"https://cdn.nba.com/headshots/nba/latest/1040x760/"+p.id+".png",onError:function(){setErr(true);},style:{width:size,height:size,borderRadius:size*.28,objectFit:"cover",objectPosition:"top",flexShrink:0,border:"1.5px solid #e8941a33",background:"#1e1e1e"}});
+}
+
+function App(){
+  var tabS=useState("board"); var tab=tabS[0]; var setTab=tabS[1];
+  var sportS=useState("NBA"); var sport=sportS[0]; var setSport=sportS[1];
+  var gamesS=useState({}); var games=gamesS[0]; var setGames=gamesS[1];
+  var loadingS=useState(true); var loading=loadingS[0]; var setLoading=loadingS[1];
+  var slipS=useState([]); var slip=slipS[0]; var setSlip=slipS[1];
+  var modalS=useState(false); var modal=modalS[0]; var setModal=modalS[1];
+  var filterS=useState("l5"); var filter=filterS[0]; var setFilter=filterS[1];
+  var rangeS=useState(10); var range=rangeS[0]; var setRange=rangeS[1];
+  var rcatS=useState("All"); var rcat=rcatS[0]; var setRcat=rcatS[1];
+  var updatedS=useState(null); var updated=updatedS[0]; var setUpdated=updatedS[1];
+  var cpRef=useRef();
+
+  function loadData(){
+    setLoading(true);
+    var res={};
+    var keys=Object.keys(SP);
+    var done=0;
+    keys.forEach(function(s){
+      var url=BASE+"/sports/"+SP[s].k+"/odds?apiKey="+K+"&regions=us&markets=h2h,spreads,totals&oddsFormat=american";
+      fetch(url).then(function(r){return r.json();}).then(function(d){
+        res[s]=(d||[]).slice(0,8).map(function(g){
+          var bk=g.bookmakers&&(g.bookmakers.find(function(b){return b.key==="fanduel";})||g.bookmakers[0]);
+          var sp=null,tot=null,hml=null,aml=null;
+          if(bk&&bk.markets){bk.markets.forEach(function(m){
+            if(m.key==="spreads"){var hh=m.outcomes.find(function(o){return o.name===g.home_team;});if(hh)sp=(hh.point>0?"+":"")+hh.point;}
+            if(m.key==="totals"){var ov=m.outcomes.find(function(o){return o.name==="Over";});if(ov)tot=ov.point;}
+            if(m.key==="h2h"){hml=m.outcomes.find(function(o){return o.name===g.home_team;});aml=m.outcomes.find(function(o){return o.name===g.away_team;});}
+          });}
+          return {id:g.id,sport:s,away:g.away_team.split(" ").pop(),home:g.home_team.split(" ").pop(),
+            time:new Date(g.commence_time).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",timeZoneName:"short"}),
+            status:"UP",sp:sp,tot:tot,hml:hml?fo(hml.price):"--",aml:aml?fo(aml.price):"--"};
+        });
+      }).catch(function(){res[s]=[];}).finally(function(){
+        done++;
+        if(done===keys.length){setGames(Object.assign({},res));setUpdated(new Date());setLoading(false);}
+      });
+    });
+  }
+
+  useEffect(function(){loadData();var iv=setInterval(loadData,180000);return function(){clearInterval(iv);};},[]);
+
+  function addSlip(item){setSlip(function(p){return p.find(function(s){return s.key===item.key;})?p.filter(function(s){return s.key!==item.key;}):[].concat(p,[item]);});}
+  function remSlip(item){setSlip(function(p){return p.filter(function(s){return s.key!==item.key;});});}
+
+  function getVal(p){return filter==="l5"?p.l5:filter==="l10"?p.l10:filter==="l25"?p.l25:filter==="streak"?p.streak:p.h2h;}
+  var den=filter==="l5"?5:filter==="l10"?10:filter==="l25"?25:10;
+  var top=BOARD.filter(function(p){return pct(getVal(p),den)>=80;});
+  var hist=HIST.slice(0,range).filter(function(h){return rcat==="All"||h.cat===rcat;});
+  var wins=hist.filter(function(h){return h.r==="WIN";}).length;
+  var hp=hist.length?pct(wins,hist.length):0;
+  var avg=slip.length?Math.round(slip.reduce(function(a,s){return a+s.conf;},0)/slip.length):0;
+  var liveCount=Object.values(games).reduce(function(a,g){return a+(g||[]).filter(function(x){return x.status==="LIVE";}).length;},0);
+
+  function copySlip(){
+    var txt=slip.map(function(s){return s.pick+" "+s.pname+" "+s.lb+(s.ln?" "+s.ln:"");}).join("\n");
+    try{if(cpRef.current){cpRef.current.value=txt;cpRef.current.select();document.execCommand("copy");}else{navigator.clipboard.writeText(txt);}}catch(e){}
+  }
+
+  return h("div",{style:{background:"#080808",minHeight:"100vh",paddingBottom:70,color:"#fff",fontFamily:"Syne,sans-serif"}},
+    h("style",null,"*{box-sizing:border-box;margin:0;padding:0}button{outline:none;cursor:pointer}::-webkit-scrollbar{display:none}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}@keyframes spin{to{transform:rotate(360deg)}}"),
+
+    // TOP BAR
+    h("div",{style:{background:"#080808",borderBottom:"1px solid #2a2a2a",position:"sticky",top:0,zIndex:300,padding:"0 14px",display:"flex",alignItems:"center",height:52,gap:10}},
+      h("div",{style:{width:32,height:32,borderRadius:8,background:"linear-gradient(135deg,#e8941a,#c8781a)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}},"🐐"),
+      h("div",null,
+        h("div",{style:{fontFamily:"Barlow Condensed,sans-serif",fontWeight:900,fontSize:18,letterSpacing:2,color:"#e8941a",lineHeight:1}},"XPERT PICKS"),
+        h("div",{style:{color:"#555",fontSize:8,letterSpacing:1}},"PROPS & PARLAYS")
+      ),
+      h("div",{style:{flex:1}}),
+      updated&&h("span",{style:{color:"#555",fontSize:9}},updated.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"})),
+      h("button",{onClick:loadData,style:{background:"none",border:"1px solid #2a2a2a",borderRadius:6,padding:"4px 10px",color:"#aaa",fontSize:11}},loading?"...":"↻"),
+      liveCount>0&&h("div",{style:{display:"flex",alignItems:"center",gap:4}},
+        h("div",{style:{width:6,height:6,borderRadius:"50%",background:"#e8941a",animation:"pulse 1.5s infinite"}}),
+        h("span",{style:{color:"#e8941a",fontSize:10,fontWeight:700}},liveCount+" LIVE")
+      ),
+      slip.length>0&&h("div",{style:{background:"#e8941a",color:"#000",borderRadius:999,padding:"3px 10px",fontSize:11,fontWeight:800}},slip.length)
+    ),
+
+    h("div",{style:{maxWidth:560,margin:"0 auto",padding:"14px 14px 0"}},
+
+      // BOARD TAB
+      tab==="board"&&h("div",null,
+        h("div",{style:{display:"flex",gap:6,marginBottom:12,overflowX:"auto",paddingBottom:2}},
+          [{id:"l5",lb:"L5"},{id:"l10",lb:"L10"},{id:"l25",lb:"L25"},{id:"streak",lb:"Streak"},{id:"h2h",lb:"H2H"}].map(function(f){
+            return h("button",{key:f.id,onClick:function(){setFilter(f.id);},style:{padding:"6px 14px",borderRadius:999,fontSize:11,fontWeight:700,whiteSpace:"nowrap",background:filter===f.id?"#e8941a":"transparent",border:"1.5px solid "+(filter===f.id?"#e8941a":"#2a2a2a"),color:filter===f.id?"#000":"#aaa"}},f.lb);
+          })
+        ),
+        top.length>0&&h("div",{style:{background:"#0f0f0f",border:"2px solid rgba(232,148,26,.3)",borderRadius:14,padding:14,marginBottom:12}},
+          h("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:10}},
+            h("span",{style:{fontSize:18}},"💯"),
+            h("div",null,
+              h("div",{style:{color:"#e8941a",fontWeight:800,fontSize:11,letterSpacing:1}},"THE 100 — 80%+ HIT RATE"),
+              h("div",{style:{color:"#555",fontSize:9}},"Tap to add to slip")
+            )
+          ),
+          top.map(function(p,i){
+            var key=p.name+p.prop,ins=!!slip.find(function(s){return s.key===key;}),v=getVal(p),r=pct(v,den);
+            return h("div",{key:i,onClick:function(){addSlip({key:key,pname:p.name,lb:p.prop,ln:p.line,pick:p.pick,conf:p.conf,gl:"Board"});},style:{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",background:ins?"rgba(232,148,26,.2)":"#161616",border:"1px solid "+(ins?"#e8941a88":"#2a2a2a"),borderRadius:10,marginBottom:6,cursor:"pointer"}},
+              h("span",{style:{color:"#555",fontSize:12,fontWeight:700,width:16}},i+1),
+              h(Photo,{name:p.name,size:34}),
+              h("div",{style:{flex:1,minWidth:0}},
+                h("div",{style:{color:"#fff",fontWeight:700,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}},p.name),
+                h("div",{style:{color:"#555",fontSize:10}},p.pick+" "+p.line+" "+p.prop)
+              ),
+              h("div",{style:{textAlign:"right"}},
+                h("div",{style:{color:r===100?"#22c55e":"#e8941a",fontWeight:900,fontSize:18,lineHeight:1}},r+"%"),
+                h("div",{style:{color:"#555",fontSize:9}},v+"/"+den)
+              )
+            );
+          })
+        ),
+        h("div",{style:{color:"#e8941a",fontWeight:800,fontSize:11,letterSpacing:1,marginBottom:10}},"🏆 FULL LEADERBOARD"),
+        BOARD.map(function(p,i){
+          var v=getVal(p),r=pct(v,den),cc=r>=80?"#22c55e":r>=65?"#e8941a":"#aaa",key=p.name+p.prop,ins=!!slip.find(function(s){return s.key===key;});
+          return h("div",{key:i,style:{background:"#0f0f0f",border:"1px solid "+(ins?"#e8941a88":"#2a2a2a"),borderRadius:12,padding:"12px 14px",marginBottom:8}},
+            h("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:10}},
+              h("span",{style:{color:"#555",fontSize:13,fontWeight:700,width:20}},"#"+(i+1)),
+              h(Photo,{name:p.name,size:42}),
+              h("div",{style:{flex:1,minWidth:0}},
+                h("div",{style:{color:"#fff",fontWeight:700,fontSize:14,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}},p.name),
+                h("div",{style:{color:"#555",fontSize:10}},p.team+" · "+p.pick+" "+p.line+" "+p.prop)
+              ),
+              h("div",{style:{textAlign:"right"}},
+                h("div",{style:{color:cc,fontWeight:900,fontSize:22,lineHeight:1}},r+"%"),
+                h("div",{style:{color:"#555",fontSize:9}},v+"/"+den+" "+filter.toUpperCase())
+              )
+            ),
+            h("div",{style:{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:4,marginBottom:8}},
+              [{lb:"L5",v:p.l5,d:5},{lb:"L10",v:p.l10,d:10},{lb:"L25",v:p.l25,d:25},{lb:"Home",v:p.hl10,d:10},{lb:"Away",v:p.al10,d:10}].map(function(s){
+                var rv=pct(s.v,s.d);
+                return h("div",{key:s.lb,style:{textAlign:"center",background:"#161616",borderRadius:6,padding:"6px 2px"}},
+                  h("div",{style:{color:rv>=80?"#22c55e":rv>=65?"#e8941a":"#aaa",fontWeight:800,fontSize:12,lineHeight:1}},rv+"%"),
+                  h("div",{style:{color:"#555",fontSize:7,marginTop:2}},s.lb),
+                  h("div",{style:{height:3,background:"#252525",borderRadius:2,marginTop:3,overflow:"hidden"}},h("div",{style:{width:rv+"%",height:"100%",background:rv>=80?"#22c55e":rv>=65?"#e8941a":"#555"}}))
+                );
+              })
+            ),
+            h("div",{style:{display:"flex",gap:5,marginBottom:8}},
+              h("div",{style:{flex:1,background:"#161616",borderRadius:6,padding:"6px 8px",textAlign:"center"}},h("div",{style:{color:"#aaa",fontSize:8,marginBottom:1}},"Streak"),h("div",{style:{color:p.streak>=5?"#22c55e":"#e8941a",fontWeight:700,fontSize:12}},"🔥 "+p.streak)),
+              h("div",{style:{flex:1,background:"#161616",borderRadius:6,padding:"6px 8px",textAlign:"center"}},h("div",{style:{color:"#aaa",fontSize:8,marginBottom:1}},"H2H"),h("div",{style:{color:p.h2h>=3?"#22c55e":"#e8941a",fontWeight:700,fontSize:12}},p.h2h+"/4")),
+              h("div",{style:{flex:1,background:"#161616",borderRadius:6,padding:"6px 8px",textAlign:"center"}},h("div",{style:{color:"#aaa",fontSize:8,marginBottom:1}},"Conf"),h("div",{style:{color:p.conf>=70?"#22c55e":"#e8941a",fontWeight:700,fontSize:12}},p.conf+"%"))
+            ),
+            h("button",{onClick:function(){addSlip({key:key,pname:p.name,lb:p.prop,ln:p.line,pick:p.pick,conf:p.conf,gl:"Board"});},style:{width:"100%",padding:"9px",background:ins?"#22c55e":"linear-gradient(90deg,#e8941a,#c8781a)",border:"none",borderRadius:8,color:"#000",fontSize:12,fontWeight:800}},ins?"✓ In Slip":"+ Add to Slip")
+          );
+        })
+      ),
+
+      // PROPS TAB
+      tab==="props"&&h("div",null,
+        h("div",{style:{display:"flex",gap:6,marginBottom:12,overflowX:"auto",paddingBottom:4}},
+          Object.entries(SP).map(function(e){var s=e[0],c=e[1];return h("button",{key:s,onClick:function(){setSport(s);},style:{padding:"7px 14px",borderRadius:999,fontSize:12,fontWeight:700,whiteSpace:"nowrap",background:sport===s?"#e8941a":"transparent",border:"1.5px solid "+(sport===s?"#e8941a":"#2a2a2a"),color:sport===s?"#000":"#aaa"}},c.i+" "+s+(games[s]&&games[s].length?" ("+games[s].length+")":""));})
+        ),
+        loading?h("div",{style:{textAlign:"center",padding:"60px"}},h("span",{style:{fontSize:30,display:"inline-block",animation:"spin 1s linear infinite"}},"⚡")):
+        !(games[sport]&&games[sport].length)?h("div",{style:{color:"#555",fontSize:13,textAlign:"center",padding:40}},"No "+sport+" games right now"):
+        (games[sport]||[]).map(function(g){
+          return h("div",{key:g.id,style:{background:"#0f0f0f",border:"1px solid #2a2a2a",borderRadius:14,marginBottom:8,padding:"13px 15px"}},
+            h("div",{style:{display:"flex",alignItems:"center",gap:10}},
+              h("span",{style:{fontSize:20}},SP[g.sport]&&SP[g.sport].i),
+              h("div",{style:{flex:1}},
+                h("div",{style:{color:"#fff",fontWeight:700,fontSize:15,marginBottom:3}},g.away+" @ "+g.home),
+                h("div",{style:{display:"flex",gap:10,flexWrap:"wrap"}},
+                  h("span",{style:{color:"#555",fontSize:11}},g.time),
+                  g.sp&&h("span",{style:{color:"#555",fontSize:11}},"Spd ",h("span",{style:{color:"#aaa"}},g.sp)),
+                  g.tot&&h("span",{style:{color:"#555",fontSize:11}},"O/U ",h("span",{style:{color:"#aaa"}},g.tot))
+                )
+              ),
+              h("div",{style:{textAlign:"right"}},
+                h("div",{style:{color:"#555",fontSize:9}},"ML"),
+                h("div",{style:{color:"#22c55e",fontSize:11,fontWeight:700}},g.hml),
+                h("div",{style:{color:"#aaa",fontSize:11}},g.aml)
+              )
+            )
+          );
+        })
+      ),
+
+      // AI TAB
+      tab==="ai"&&h("div",null,
+        h("div",{style:{background:"linear-gradient(135deg,#0f0f0f,#161616)",border:"2px solid rgba(232,148,26,.3)",borderRadius:14,padding:14,marginBottom:14}},
+          h("div",{style:{display:"flex",alignItems:"center",gap:8}},h("span",{style:{fontSize:20}},"🤖"),h("div",null,h("div",{style:{color:"#e8941a",fontWeight:800,fontSize:12,letterSpacing:1}},"AI PICK ANALYSIS"),h("div",{style:{color:"#555",fontSize:9}},"Sharp money + historical data")))
+        ),
+        BOARD.slice(0,5).map(function(p,i){
+          var key=p.name+p.prop,ins=!!slip.find(function(s){return s.key===key;});
+          var cc=p.conf>=70?"#22c55e":p.conf>=63?"#e8941a":"#aaa";
+          var lvl=p.conf>=70?"🔥 HIGH CONFIDENCE":p.conf>=63?"⚡ MEDIUM":"📊 STANDARD";
+          return h("div",{key:i,style:{background:"#0f0f0f",border:"1px solid "+(ins?"#e8941a88":"#2a2a2a"),borderRadius:14,padding:14,marginBottom:10}},
+            h("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:12}},
+              h(Photo,{name:p.name,size:46}),
+              h("div",{style:{flex:1,minWidth:0}},h("div",{style:{color:"#fff",fontWeight:800,fontSize:16,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}},p.name),h("div",{style:{color:"#555",fontSize:10}},p.team+" · "+p.prop)),
+              h("div",{style:{textAlign:"right"}},h("div",{style:{color:cc,fontWeight:900,fontSize:24,lineHeight:1}},p.conf+"%"),h("div",{style:{color:"#555",fontSize:9}},"confidence"))
+            ),
+            h("div",{style:{background:"linear-gradient(135deg,#22c55e22,#161616)",border:"1px solid #22c55e33",borderRadius:10,padding:"10px 14px",marginBottom:12}},
+              h("div",{style:{color:"#22c55e",fontWeight:900,fontSize:22,marginBottom:6}},p.pick+" "+p.line+" "+p.prop),
+              h("div",{style:{color:"#e8941a",fontSize:10,fontWeight:700,marginBottom:4}},lvl),
+              h("div",{style:{color:"#aaa",fontSize:12,lineHeight:1.5}},p.name+" hitting at "+pct(p.l5,5)+"% L5 with a streak of "+p.streak+". "+(p.conf>=70?"Back this aggressively.":"Solid play."))
+            ),
+            h("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:10}},
+              [{lb:"L5 Rate",v:pct(p.l5,5)+"%",c:p.l5===5?"#22c55e":"#e8941a"},{lb:"Streak",v:"🔥 "+p.streak,c:p.streak>=5?"#22c55e":"#e8941a"},{lb:"H2H",v:p.h2h+"/4",c:p.h2h>=3?"#22c55e":"#e8941a"}].map(function(s){
+                return h("div",{key:s.lb,style:{textAlign:"center",background:"#161616",borderRadius:8,padding:"8px 4px",border:"1px solid #2a2a2a"}},h("div",{style:{color:s.c,fontWeight:800,fontSize:15,lineHeight:1}},s.v),h("div",{style:{color:"#555",fontSize:8,marginTop:2}},s.lb));
+              })
+            ),
+            h("button",{onClick:function(){addSlip({key:key,pname:p.name,lb:p.prop,ln:p.line,pick:p.pick,conf:p.conf,gl:"AI"});},style:{width:"100%",padding:"10px",background:ins?"#22c55e":"linear-gradient(90deg,#e8941a,#c8781a)",border:"none",borderRadius:8,color:"#000",fontSize:13,fontWeight:800}},ins?"✓ In Slip":"+ Add to Slip")
+          );
+        })
+      ),
+
+      // RECORD TAB
+      tab==="record"&&h("div",null,
+        h("div",{style:{background:"#0f0f0f",borderRadius:14,padding:14,marginBottom:12,border:"1px solid #2a2a2a"}},
+          h("div",{style:{color:"#e8941a",fontWeight:800,fontSize:11,letterSpacing:1,marginBottom:10}},"📊 TRACK RECORD"),
+          h("div",{style:{display:"flex",gap:6,marginBottom:10,overflowX:"auto"}},
+            [5,10,20,25].map(function(r){return h("button",{key:r,onClick:function(){setRange(r);},style:{padding:"6px 14px",borderRadius:999,fontSize:11,fontWeight:700,whiteSpace:"nowrap",background:range===r?"#e8941a":"transparent",border:"1.5px solid "+(range===r?"#e8941a":"#2a2a2a"),color:range===r?"#000":"#aaa"}},"L"+r);})
+          ),
+          h("div",{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginBottom:10}},
+            [{lb:"Hit Rate",v:hp+"%",c:hp>=70?"#22c55e":"#e8941a"},{lb:"Wins",v:wins,c:"#22c55e"},{lb:"Losses",v:hist.length-wins,c:"#ef4444"},{lb:"Total",v:hist.length,c:"#fff"}].map(function(s){
+              return h("div",{key:s.lb,style:{textAlign:"center",background:"#161616",borderRadius:8,padding:"8px 4px",border:"1px solid #2a2a2a"}},h("div",{style:{color:s.c,fontSize:20,fontWeight:900,lineHeight:1}},s.v),h("div",{style:{color:"#555",fontSize:8,marginTop:2}},s.lb));
+            })
+          ),
+          h("div",{style:{height:8,background:"#252525",borderRadius:4,overflow:"hidden"}},h("div",{style:{width:hp+"%",height:"100%",background:"linear-gradient(90deg,#e8941a,#22c55e)",borderRadius:4}}))
+        ),
+        h("div",{style:{display:"flex",gap:5,marginBottom:10,overflowX:"auto"}},
+          ["All","Points","Rebounds","Assists","PRA","3PM","ML"].map(function(c){return h("button",{key:c,onClick:function(){setRcat(c);},style:{padding:"5px 12px",borderRadius:999,fontSize:10,fontWeight:700,whiteSpace:"nowrap",background:rcat===c?"#e8941a":"transparent",border:"1px solid "+(rcat===c?"#e8941a":"#2a2a2a"),color:rcat===c?"#000":"#aaa"}},c);})
+        ),
+        hist.map(function(h2,i){
+          return h("div",{key:i,style:{background:"#0f0f0f",borderRadius:10,padding:"10px 14px",marginBottom:6,border:"1px solid "+(h2.r==="WIN"?"#22c55e33":"#ef444433"),display:"flex",alignItems:"center",gap:10}},
+            h("span",null,h2.r==="WIN"?"✅":"❌"),
+            h("div",{style:{flex:1,minWidth:0}},h("div",{style:{color:"#fff",fontSize:12,fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}},h2.p),h("div",{style:{color:"#555",fontSize:10}},h2.d+" · "+h2.a)),
+            h("span",{style:{color:h2.r==="WIN"?"#22c55e":"#ef4444",fontWeight:800,fontSize:11}},h2.r)
+          );
+        })
+      ),
+
+      // SLIP TAB
+      tab==="slip"&&h("div",{style:{background:"#0f0f0f",border:"1px solid #2a2a2a",borderRadius:12,overflow:"hidden"}},
+        h("div",{style:{background:"linear-gradient(90deg,rgba(232,148,26,.15),transparent)",borderBottom:"1px solid #2a2a2a",padding:"12px 14px",display:"flex",alignItems:"center",justifyContent:"space-between"}},
+          h("div",{style:{display:"flex",alignItems:"center",gap:8}},h("span",{style:{color:"#fff",fontWeight:700,fontSize:14}},"Bet Slip"),slip.length>0&&h("div",{style:{background:"#e8941a",color:"#000",borderRadius:"50%",width:20,height:20,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:900}},slip.length)),
+          slip.length>0&&h("button",{onClick:function(){slip.forEach(remSlip);},style:{background:"none",border:"none",color:"#555",fontSize:11}},"Clear all")
+        ),
+        slip.length===0?
+          h("div",{style:{padding:"36px 20px",textAlign:"center"}},h("div",{style:{fontSize:30,marginBottom:10}},"🐐"),h("div",{style:{color:"#aaa",fontSize:13,fontWeight:600,marginBottom:4}},"Build your parlay"),h("div",{style:{color:"#555",fontSize:11}},"Add picks from Board or AI")):
+          h("div",{style:{padding:10}},
+            slip.map(function(s,i){
+              return h("div",{key:i,style:{background:"#161616",borderRadius:8,padding:10,marginBottom:6,border:"1px solid #2a2a2a",position:"relative"}},
+                h("button",{onClick:function(){remSlip(s);},style:{position:"absolute",top:8,right:8,background:"none",border:"none",color:"#555",fontSize:18}},"x"),
+                h("div",{style:{paddingRight:24}},
+                  h("div",{style:{color:"#fff",fontWeight:700,fontSize:12}},s.pname),
+                  h("div",{style:{color:"#555",fontSize:10,marginBottom:4}},s.lb),
+                  h("div",{style:{display:"flex",alignItems:"center",gap:6}},
+                    h("span",{style:{background:s.pick==="OVER"?"#22c55e15":"#ef444415",color:s.pick==="OVER"?"#22c55e":"#ef4444",borderRadius:4,padding:"2px 8px",fontSize:11,fontWeight:700}},s.pick),
+                    s.ln&&h("span",{style:{color:"#fff",fontWeight:800,fontSize:13}},s.ln),
+                    h("span",{style:{color:"#e8941a",fontSize:10,marginLeft:"auto",fontWeight:600}},s.conf+"%")
+                  )
+                )
+              );
+            }),
+            h("div",{style:{padding:"8px 4px",borderTop:"1px solid #2a2a2a",marginBottom:8}},
+              h("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:3}},h("span",{style:{color:"#555",fontSize:11}},"Avg Confidence"),h("span",{style:{color:"#e8941a",fontWeight:700,fontSize:11}},avg+"%")),
+              h("div",{style:{display:"flex",justifyContent:"space-between"}},h("span",{style:{color:"#555",fontSize:11}},"Legs"),h("span",{style:{color:"#aaa",fontWeight:700,fontSize:11}},slip.length))
+            ),
+            h("textarea",{ref:cpRef,readOnly:true,style:{position:"fixed",left:"-9999px",opacity:0}}),
+            h("button",{onClick:copySlip,style:{width:"100%",padding:"9px",marginBottom:6,background:"transparent",border:"1.5px solid #2a2a2a",borderRadius:8,color:"#aaa",fontSize:12,fontWeight:600}},"📋 Copy Picks"),
+            h("button",{onClick:function(){setModal(true);},style:{width:"100%",padding:12,background:"linear-gradient(90deg,#e8941a,#c8781a)",border:"none",borderRadius:8,color:"#000",fontSize:13,fontWeight:800}},"📤 Send to Sportsbook")
+          )
+      )
+    ),
+
+    // BOTTOM NAV
+    h("div",{style:{position:"fixed",bottom:0,left:0,right:0,background:"#0f0f0f",borderTop:"1px solid #2a2a2a",display:"flex",zIndex:400}},
+      TABS.map(function(t){
+        var act=tab===t.id,badge=t.id==="slip"&&slip.length>0;
+        return h("button",{key:t.id,onClick:function(){setTab(t.id);},style:{flex:1,padding:"10px 2px 12px",background:"none",border:"none",display:"flex",flexDirection:"column",alignItems:"center",gap:2,position:"relative"}},
+          badge&&h("div",{style:{position:"absolute",top:6,right:"14%",background:"#e8941a",color:"#000",borderRadius:"50%",width:16,height:16,display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900}},slip.length),
+          h("span",{style:{fontSize:17}},t.i),
+          h("span",{style:{fontSize:7,fontWeight:700,color:act?"#e8941a":"#555"}},t.l.toUpperCase()),
+          act&&h("div",{style:{position:"absolute",top:0,left:"10%",right:"10%",height:2,background:"#e8941a",borderRadius:"0 0 2px 2px"}})
+        );
+      })
+    ),
+
+    // MODAL
+    modal&&h("div",{style:{position:"fixed",inset:0,zIndex:999,background:"rgba(0,0,0,.85)",display:"flex",alignItems:"flex-end",justifyContent:"center"},onClick:function(){setModal(false);}},
+      h("div",{onClick:function(e){e.stopPropagation();},style:{width:"100%",maxWidth:480,background:"#0f0f0f",border:"1px solid #2a2a2a",borderRadius:"16px 16px 0 0",overflow:"hidden"}},
+        h("div",{style:{width:36,height:4,background:"#2a2a2a",borderRadius:2,margin:"10px auto 14px"}}),
+        h("div",{style:{padding:"0 18px 28px"}},
+          h("div",{style:{color:"#fff",fontWeight:700,fontSize:16,marginBottom:14}},"Send to Sportsbook"),
+          h("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:14}},
+            PLAT.map(function(p){
+              return h("a",{key:p.n,href:p.u,target:"_blank",rel:"noreferrer",style:{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:"10px 4px",background:"#161616",border:"1px solid #2a2a2a",borderRadius:10,textDecoration:"none"}},
+                h("div",{style:{width:28,height:28,borderRadius:6,background:p.c+"22",display:"flex",alignItems:"center",justifyContent:"center",color:p.c,fontWeight:900,fontSize:8}},p.n.slice(0,2).toUpperCase()),
+                h("span",{style:{color:"#aaa",fontSize:9,fontWeight:600,textAlign:"center"}},p.n)
+              );
+            })
+          ),
+          h("div",{style:{color:"#555",fontSize:9,textAlign:"center"}},"21+ only. Verify all lines. 1-800-GAMBLER")
+        )
+      )
+    )
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
 </script>
 </body>
 </html>
+EOF
+echo "done: $(wc -l < /mnt/user-data/outputs/index.html) lines"
